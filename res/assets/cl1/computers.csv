@@ -4,8 +4,8 @@ itemId,itemName,type,status,destination
 3,PC3,Computer,Not Available,1
 4,PC4,Computer,Not Available,1
 5,PC5,Computer,Not Available,1
-6,PC6,Computer,Available,1
-7,PC7,Computer,Available,1
+6,PC6,Computer,Not Available,1
+7,PC7,Computer,Not Available,1
 8,PC8,Computer,Available,1
 9,PC9,Computer,Available,1
 10,PC10,Computer,Available,1

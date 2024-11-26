@@ -1,9 +1,9 @@
 itemId,itemName,type,status,destination
-21,PC1,Computer,Available,2
-22,PC2,Computer,Available,2
-23,PC3,Computer,Available,2
-24,PC4,Computer,Available,2
-25,PC5,Computer,Available,2
+21,PC1,Computer,Not Available,2
+22,PC2,Computer,Not Available,2
+23,PC3,Computer,Not Available,2
+24,PC4,Computer,Not Available,2
+25,PC5,Computer,Not Available,2
 26,PC6,Computer,Available,2
 27,PC7,Computer,Available,2
 28,PC8,Computer,Available,2
