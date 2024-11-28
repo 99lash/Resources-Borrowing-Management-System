@@ -150,7 +150,7 @@ public class AppController {
           String password = fields[2];
           String role = fields[3];
           accountController.addAccount(new User(id, username, password, role));
-        } else 
+        } else
           header = false;
       }
       reader.close();
@@ -187,10 +187,17 @@ public class AppController {
     File originalFile = new File(origFilePath);
     File updatedFile = new File(tempFilePath);
 
-    if (originalFile.delete() && updatedFile.renameTo(originalFile)) {
-      System.out.println("Account updated successfully.");
+    if (originalFile.delete()) {
+      if (updatedFile.renameTo(originalFile)) {
+        // 200: CSV file updated successfully
+        System.out.println("[UPDATE STATUS: 200]");
+      } else {
+        // 404R: Couldn't rename file
+        System.out.println("[UPDATE STATUS: 404R]");
+      }
     } else {
-      System.out.println("Account updated unsuccessfully.");
+      // 404D: Couldn't delete file
+      System.out.println("[UPDATE STATUS: 404D]");
     }
   }
 
@@ -286,10 +293,10 @@ public class AppController {
 
   public void ManageAccounts() {
     boolean show = true;
-    
+
     while (true) {
-      String s = show? " Hide " : " Show ";
-      boolean success = false;
+      String s = show ? " Hide " : " Show ";
+      Boolean success = false;
       new Clrscr();
       System.out.println("---------------------------------------");
       System.out.println("Administrative Panel -> Manage Accounts");
@@ -314,7 +321,8 @@ public class AppController {
         case 1:
           fetchAccountsDatabase();
           success = accountController.createAccount();
-          if (success) updateAccountDatabase(accountController.getAccounts());
+          if (success)
+            updateAccountDatabase(accountController.getAccounts());
           accountController.clearAccounts();
           new Getch();
           break;
@@ -322,7 +330,8 @@ public class AppController {
         case 2:
           fetchAccountsDatabase();
           success = accountController.updateAccount();
-          if (success) updateAccountDatabase(accountController.getAccounts());
+          if (success)
+            updateAccountDatabase(accountController.getAccounts());
           accountController.clearAccounts();
           new Getch();
           break;
@@ -336,8 +345,14 @@ public class AppController {
 
         case 4:
           fetchAccountsDatabase();
-          success = accountController.deleteAccount();
-          if (success) updateAccountDatabase(accountController.getAccounts());
+          success = accountController.deleteAccount(getCurrentUser());
+          if (success == null) {
+            updateAccountDatabase(accountController.getAccounts());
+            accountController.clearAccounts();
+            new Getch();
+            new Main().main(null);
+          } else if (success)
+            updateAccountDatabase(accountController.getAccounts());
           accountController.clearAccounts();
           new Getch();
           break;
