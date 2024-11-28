@@ -48,7 +48,7 @@ public class AccountController {
     User account = searchAccount(username, role);
     if (account == null) {
       addAccount(new User(username, password, role));
-      System.out.println("Account successfully created.");
+      System.out.println("Account Successfully Created.");
       return true;
     }
     System.out.println("Account already existing.");
@@ -142,7 +142,7 @@ public class AccountController {
     return true;
   }
 
-  public boolean deleteAccount() {
+  public Boolean deleteAccount(User currentUser) {
     new Clrscr();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
@@ -157,11 +157,38 @@ public class AccountController {
       System.out.println("Account does not exist.");
       return false;
     }
-    System.out.println(user.getAccountInfo());
     // TODO: verification to remove [Y/N]
-    accounts.remove(accounts.indexOf(user));
-    System.out.println("Account deleted successfully.");
-    return true;
+    Boolean confirmation = false;
+
+    while (true) {
+      boolean currentUserDeleting = currentUser.getAccountInfo().equals(user.getAccountInfo());
+      boolean superAccountDeleting = user.getId() == 101 && user.getUsername().equals("admin")
+          && user.getRole().equals("admin");
+      if (superAccountDeleting) {
+        System.out.println("ERROR: You can't delete super admin account.");
+        return false;
+      }
+      System.out.println("Review account details to be deleted");
+      System.out.println("---------------------------------------------------");
+      System.out.println(user.getAccountInfo());
+      if (currentUserDeleting) {
+        System.out.println("NOTICE: You will be logged out if you deleted your account!");
+        System.out.print("Are you sure want to delete your account? (Y/N): ");
+      } else {
+        System.out.print("Are you sure you want to delete this account? (Y/N): ");
+      }
+      char ch = in.next().toUpperCase().charAt(0);
+      if (ch == 'Y') {
+        confirmation = currentUserDeleting ? null : true;
+        accounts.remove(accounts.indexOf(user));
+        System.out.println("Account Deleted Successfully.");
+        break;
+      } else {
+        System.out.println("Account Deleted Unsuccessfully.");
+        break;
+      }
+    }
+    return confirmation;
   }
 
   public void displayAllAccounts() {
@@ -187,9 +214,8 @@ public class AccountController {
 
   private User searchAccount(String username, String role) {
     for (User account : accounts) {
-      if (account.getUsername().equals(username) && account.getRole().equals(role)) {
-        return account;
-      }
+      boolean accountExisting = account.getUsername().equals(username) && account.getRole().equals(role);   
+      if (accountExisting) return account;
     }
     return null;
   }
