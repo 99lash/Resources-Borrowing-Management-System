@@ -116,12 +116,12 @@ public class InventoryController {
 
     try {
       Scanner reader = new Scanner(new File(filepath));
-      boolean header = false;
+      
       while (reader.hasNextLine()) {
-        String line = reader.nextLine();
-        String[] fields = line.split(",");
+        String line = reader.nextLine(); // itemId,itemName,type,status,destination
+        String[] fields = line.split(","); // fields = {1, PC1, Computer, Not Available, 1}; 
 
-        header = fields[0].equalsIgnoreCase("itemid") ? true : false;
+        boolean header = fields[0].equalsIgnoreCase("itemid") ? true : false;
 
         if (!header) {
           int id = Integer.parseInt(fields[0]);
