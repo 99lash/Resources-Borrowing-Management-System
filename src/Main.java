@@ -12,9 +12,10 @@ public class Main {
     boolean login = true;
     while(login){
       new Clrscr();
+      new Title();
       System.out.println("1.Sign in");
       System.out.println("2.Exit");
-      System.out.print("Enter your choice: ");
+      System.out.print("Select: ");
       int choice = in.nextInt();
       in.nextLine();
       if (choice == 2) {
