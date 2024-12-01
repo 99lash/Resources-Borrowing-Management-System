@@ -14,6 +14,4 @@ public class Clrscr {
       System.out.println("Error: Unable to clear screen");
     }
   }
-
-  
 }

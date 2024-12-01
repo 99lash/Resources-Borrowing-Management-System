@@ -2,15 +2,17 @@ public class Student {
   private String studentId;
   private String firstName;
   private String lastName;
+  private String middleInitial;
   private String course;
   private int year;
   private char section;
   private String department;
   
-  Student(String studentId, String lastName, String firstName, String course, int year, char section, String department) {
+  Student(String studentId, String lastName, String firstName, String middleInitial, String course, int year, char section, String department) {
     this.studentId = studentId;
-    this.firstName = firstName;
     this.lastName = lastName;
+    this.firstName = firstName;
+    this.middleInitial = middleInitial;
     this.course = course;
     this.year = year;
     this.section = section;
@@ -28,6 +30,14 @@ public class Student {
 
   public String getFirstName() {
     return firstName;
+  }
+
+  public String getMiddleInitial() {
+    return middleInitial;
+  }
+
+  public String getFullName() {
+    return String.format("%s, %s %s", lastName, firstName, middleInitial);
   }
 
   public String getCourse() {

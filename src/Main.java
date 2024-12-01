@@ -17,7 +17,7 @@ public class Main {
       System.out.print("password: ");
       String password = in.nextLine();
 
-      Account account = app.authenticate(username, password);
+      User account = app.authenticate(username, password);
 
       if (account != null) {
         String role = account.getRole();

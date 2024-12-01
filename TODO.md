@@ -1,6 +1,26 @@
 # Resources Borrowing Management System - TODO
 
 ## Classes and Relationships
+
+**AppController.java** 
+  - **InventoryController.java**
+    - Resource.java
+      1. Computer.java (extended)
+      2. Laptop.java (extended)
+      3. Equipment.java (extended)  
+  - **AccountController.java**
+    - Account.java
+      1. Admin.java (extended)
+      2. Staff.java (extended)
+  - **BorrowTransactionController**
+     1. BorrowTransaction.java
+  - **StudentController.java**
+     1. Student.java    
+  - **AuditLogController.java**
+     1. AuditLog.java
+
+## Classes, Attributes, Methods
+
 1. **Resource**
    - Attributes:
      - id: int
