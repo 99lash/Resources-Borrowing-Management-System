@@ -211,59 +211,59 @@ public class AppController {
     } else {
       new Clrscr();
       System.out.println(
-          "Hello, " + username + "! Your role is invalid.\nPlease reach out to your administrator to fix your role.");
-      new Getch();
-    }
-  }
-
-  public void adminDashboard(String username) {
-    boolean running = true;
-    while (running) {
-      new Clrscr();
-      System.out.println("Welcome back, " + username + "!");
-      new Title();
-      System.out.println("1.Borrow an Item");
-      System.out.println("2.Return an Item");
-      System.out.println("3.View Borrower Log");
-      System.out.println("4.View Audit Log");
-      System.out.println("5.Admin Operations");
-      System.out.println("6.Log out");
-      System.out.print("Select: ");
-      int ch = in.nextInt();
-
-      switch (ch) {
-
-        case 1:
-          borrowingForm();
-          break;
-
-        case 2:
-          ReturningForm();
-          break;
-
-        case 5:
-          administrativeOperations();
-          break;
-
-        case 6:
-          running = false;
-          break;
-
-        default:
-          break;
+        "Hello, " + username + "! Your role is invalid.\nPlease reach out to your administrator to fix your role.");
+        new Getch();
       }
     }
-
-  }
-
-  public void administrativeOperations() {
-    while (true) {
-      new Clrscr();
-      System.out.println("----------------------------");
-      System.out.println("Administrative Panel");
-      System.out.println("----------------------------\n");
-      System.out.println("1. Manage Accounts");
-      System.out.println("2. Manage Students Masterlist");
+    
+    public void adminDashboard(String username) {
+      boolean running = true;
+      while (running) {
+        new Clrscr();
+        new Title();
+        System.out.println("Welcome back, " + username + "!");
+        System.out.println("\n1.Borrow an Item");
+        System.out.println("2.Return an Item");
+        System.out.println("3.View Borrower Log");
+        System.out.println("4.View Audit Log");
+        System.out.println("5.Admin Operations");
+        System.out.println("6.Log out");
+        System.out.print("Select: ");
+        int ch = in.nextInt();
+        
+        switch (ch) {
+          
+          case 1:
+          borrowingForm();
+          break;
+          
+          case 2:
+          ReturningForm();
+          break;
+          
+          case 5:
+          administrativeOperations();
+          break;
+          
+          case 6:
+          running = false;
+          break;
+          
+          default:
+          break;
+        }
+      }
+      
+    }
+    
+    public void administrativeOperations() {
+      while (true) {
+        new Clrscr();
+        System.out.println("---------------------------------------");
+        System.out.println("\tAdministrative Panel");
+        System.out.println("---------------------------------------\n");
+        System.out.println("1. Manage Accounts");
+        System.out.println("2. Manage Students Masterlist");
       System.out.println("3. Manage Inventory");
       System.out.println("4. Back to Dashboard");
       System.out.print("Select: ");
@@ -377,7 +377,8 @@ public class AppController {
     while (running) {
       new Clrscr();
       new Title();
-      System.out.println("1.Borrow an Item");
+      System.out.println("Welcome back, " + username + "!");
+      System.out.println("\n1.Borrow an Item");
       System.out.println("2.Return an Item");
       System.out.println("3.View Borrower Log");
       System.out.println("4.View Audit Log");
