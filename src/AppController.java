@@ -2,6 +2,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
@@ -219,74 +220,90 @@ public class AppController {
   public void adminDashboard(String username) {
     boolean running = true;
     while (running) {
-      new Clrscr();
-      System.out.println("Welcome back, " + username + "!");
-      new Title();
-      System.out.println("1.Borrow an Item");
-      System.out.println("2.Return an Item");
-      System.out.println("3.View Borrower Log");
-      System.out.println("4.View Audit Log");
-      System.out.println("5.Admin Operations");
-      System.out.println("6.Log out");
-      System.out.print("Select: ");
-      int ch = in.nextInt();
+      try {
+        new Clrscr();
+        System.out.println("Welcome back, " + username + "!");
+        new Title();
+        System.out.println("1.Borrow an Item");
+        System.out.println("2.Return an Item");
+        System.out.println("3.View Borrower Log");
+        System.out.println("4.View Audit Log");
+        System.out.println("5.Admin Operations");
+        System.out.println("6.Log out");
+        System.out.print("Select: ");
+        int ch = in.nextInt();
 
-      switch (ch) {
-
-        case 1:
-          borrowingForm();
-          break;
-
-        case 2:
-          ReturningForm();
-          break;
-
-        case 5:
-          administrativeOperations();
-          break;
-
-        case 6:
-          running = false;
-          break;
-
-        default:
-          break;
+        switch (ch) {
+          case 1:
+            borrowingForm();
+            break;
+          case 2:
+            ReturningForm();
+            break;
+          case 3:
+            break;
+          case 4:
+            break;
+          case 5:
+            administrativeOperations();
+            break;
+          case 6:
+            running = false;
+            break;
+          default:
+            System.out.println("Invalid choice. Please try again.");
+            new Getch();
+            break;
+        }
+      } catch (InputMismatchException e) {
+        System.out.println("\nInvalid Input! Use Integer only");
+        new Getch();
+        in.nextLine();
+      } catch (Exception e) {
+        System.out.println("An error occurred: " + e.getMessage());
       }
     }
-
   }
 
   public void administrativeOperations() {
     while (true) {
-      new Clrscr();
-      System.out.println("----------------------------");
-      System.out.println("Administrative Panel");
-      System.out.println("----------------------------\n");
-      System.out.println("1. Manage Accounts");
-      System.out.println("2. Manage Students Masterlist");
-      System.out.println("3. Manage Inventory");
-      System.out.println("4. Back to Dashboard");
-      System.out.print("Select: ");
-      int ch = in.nextInt();
-      in.nextLine();
+      try {
+        new Clrscr();
+        System.out.println("----------------------------");
+        System.out.println("Administrative Panel");
+        System.out.println("----------------------------\n");
+        System.out.println("1. Manage Accounts");
+        System.out.println("2. Manage Students Masterlist");
+        System.out.println("3. Manage Inventory");
+        System.out.println("4. Back to Dashboard");
+        System.out.print("Select: ");
 
-      switch (ch) {
-        case 1:
-          ManageAccounts();
-          break;
+        int ch = in.nextInt();
+        in.nextLine();
 
-        case 2:
-          break;
+        switch (ch) {
+          case 1:
+            ManageAccounts();
+            break;
+          case 2:
 
-        case 3:
-          break;
+            break;
+          case 3:
 
-        case 4:
-          return;
-
-        default:
-          System.out.println("Invalid input! Please select between 1-4.");
-          break;
+            break;
+          case 4:
+            return;
+          default:
+            System.out.println("Invalid input! Please select between 1-4.");
+            new Getch();
+            break;
+        }
+      } catch (InputMismatchException e) {
+        System.out.println("\nInvalid Input! Use Integer only");
+        new Getch();
+        in.nextLine();
+      } catch (Exception e) {
+        System.out.println("An unexpected error occurred: " + e.getMessage());
       }
     }
   }
@@ -295,78 +312,93 @@ public class AppController {
     boolean show = true;
 
     while (true) {
-      String s = show ? " Hide " : " Show ";
-      Boolean success = false;
-      new Clrscr();
-      System.out.println("---------------------------------------");
-      System.out.println("Administrative Panel -> Manage Accounts");
-      System.out.println("---------------------------------------\n");
-      if (show) {
-        fetchAccountsDatabase();
-        accountController.displayAllAccounts();
-        accountController.clearAccounts();
-      } else {
-        System.out.println("List of Accounts Detail (Hidden)");
-      }
-      System.out.println("1. Create an Account");
-      System.out.println("2. Update an Account");
-      System.out.println("3. Search an Account");
-      System.out.println("4. Delete an Account");
-      System.out.println("5." + s + "list of accounts");
-      System.out.println("6. Back to Administrative Panel");
-      System.out.print("Select: ");
-      int ch = in.nextInt();
+      try {
+        String s = show ? " Hide " : " Show ";
+        Boolean success = false;
+        new Clrscr();
+        System.out.println("---------------------------------------");
+        System.out.println("Administrative Panel -> Manage Accounts");
+        System.out.println("---------------------------------------\n");
 
-      switch (ch) {
-        case 1:
+        if (show) {
           fetchAccountsDatabase();
-          success = accountController.createAccount();
-          if (success)
-            updateAccountDatabase(accountController.getAccounts());
+          accountController.displayAllAccounts();
           accountController.clearAccounts();
-          new Getch();
-          break;
+        } else {
+          System.out.println("List of Accounts Detail (Hidden)");
+        }
 
-        case 2:
-          fetchAccountsDatabase();
-          success = accountController.updateAccount();
-          if (success)
-            updateAccountDatabase(accountController.getAccounts());
-          accountController.clearAccounts();
-          new Getch();
-          break;
+        System.out.println("1. Create an Account");
+        System.out.println("2. Update an Account");
+        System.out.println("3. Search an Account");
+        System.out.println("4. Delete an Account");
+        System.out.println("5." + s + "list of accounts");
+        System.out.println("6. Back to Administrative Panel");
+        System.out.print("Select: ");
 
-        case 3:
-          fetchAccountsDatabase();
-          success = accountController.searchAccount();
-          accountController.clearAccounts();
-          new Getch();
-          break;
+        int ch = in.nextInt();
 
-        case 4:
-          fetchAccountsDatabase();
-          success = accountController.deleteAccount(getCurrentUser());
-          if (success == null) {
-            updateAccountDatabase(accountController.getAccounts());
+        switch (ch) {
+          case 1:
+            fetchAccountsDatabase();
+            success = accountController.createAccount();
+            if (success) {
+              updateAccountDatabase(accountController.getAccounts());
+            }
             accountController.clearAccounts();
             new Getch();
-            new Main().main(null);
-          } else if (success)
-            updateAccountDatabase(accountController.getAccounts());
-          accountController.clearAccounts();
-          new Getch();
-          break;
+            break;
 
-        case 5:
-          show = !show;
-          break;
+          case 2:
+            fetchAccountsDatabase();
+            success = accountController.updateAccount();
+            if (success) {
+              updateAccountDatabase(accountController.getAccounts());
+            }
+            accountController.clearAccounts();
+            new Getch();
+            break;
 
-        case 6:
-          return;
+          case 3:
+            fetchAccountsDatabase();
+            success = accountController.searchAccount();
+            accountController.clearAccounts();
+            new Getch();
+            break;
 
-        default:
-          System.out.println("Invalid input! Please select between 1-5.");
-          break;
+          case 4:
+            fetchAccountsDatabase();
+            success = accountController.deleteAccount(getCurrentUser());
+            if (success == null) {
+              updateAccountDatabase(accountController.getAccounts());
+              accountController.clearAccounts();
+              new Getch();
+              new Main().main(null);
+            } else if (success) {
+              updateAccountDatabase(accountController.getAccounts());
+            }
+            accountController.clearAccounts();
+            new Getch();
+            break;
+
+          case 5:
+            show = !show;
+            break;
+
+          case 6:
+            return;
+
+          default:
+            System.out.println("Invalid input! Please select between 1-6.");
+            new Getch();
+            break;
+        }
+      } catch (InputMismatchException e) {
+        System.out.println("\nInvalid Input! Use Integer only");
+        new Getch();
+        in.nextLine(); // Clear invalid input
+      } catch (Exception e) {
+        System.out.println("An unexpected error occurred: " + e.getMessage());
       }
     }
   }
@@ -494,34 +526,44 @@ public class AppController {
     boolean running = true;
 
     while (running) {
-      new Clrscr();
-      new Title();
-      System.out.println("Type of Resources");
-      System.out.println("1. PC");
-      System.out.println("2. Laptop");
-      System.out.println("3. Other Equipments");
-      System.out.println("4. Cancel");
-      System.out.print("Select: ");
-      int ch = in.nextInt();
+      try {
+        new Clrscr();
+        new Title();
+        System.out.println("Type of Resources");
+        System.out.println("1. PC");
+        System.out.println("2. Laptop");
+        System.out.println("3. Other Equipments");
+        System.out.println("4. Cancel");
+        System.out.print("Select: ");
 
-      switch (ch) {
-        case 1:
-          ComputerForm();
-          running = false;
-          break;
+        int ch = in.nextInt();
 
-        case 2:
-          running = false;
-          System.out.println("Laptop");
-          break;
-
-        case 3:
-          running = false;
-          System.out.println("Other Equipments");
-          break;
-
-        case 4:
-          return;
+        switch (ch) {
+          case 1:
+            ComputerForm();
+            running = false;
+            break;
+          case 2:
+            running = false;
+            System.out.println("Laptop");
+            break;
+          case 3:
+            running = false;
+            System.out.println("Other Equipments");
+            break;
+          case 4:
+            return;
+          default:
+            System.out.println("Invalid choice. Please select a valid option.");
+            new Getch();
+            break;
+        }
+      } catch (InputMismatchException e) {
+        System.out.println("\nInvalid Input! Use Integer only");
+        new Getch();
+        in.nextLine(); // Clear the invalid input from the scanner buffer
+      } catch (Exception e) {
+        System.out.println("An unexpected error occurred: " + e.getMessage());
       }
     }
   }
@@ -546,7 +588,7 @@ public class AppController {
  * - returnResource(transactionId: int): void
  * - Logs:
  * - viewBorrowerLog(filterBy: String, sortBy: String, ascending: boolean):
- * List<BorrowTransaction>
+ * List<BorrowTransaction>b
  * - viewAuditLog(): List<AuditLog>
  * - Administrative Functions:
  * - createAccount(account: Account): void
