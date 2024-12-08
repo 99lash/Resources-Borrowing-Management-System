@@ -10,37 +10,23 @@ public class Main {
   public static void main(String[] args) {
 
     AppController app = new AppController();
-    boolean login = true;
-    while (login) {
-      System.out.println("1.Sign in");
-      System.out.println("2.Exit");
-      System.out.print("Select: ");
-      int choice = in.nextInt();
-      in.nextLine();
-      if (choice == 2) {
-        login = false;
-        System.out.println("Goodbye!");
-        break;
-      }
-      while (true) {
-        new Clrscr();
-        new Title();
-        System.out.print("username: ");
-        String username = in.nextLine();
-        System.out.print("password: ");
-        String password = in.nextLine();
-        
-        User account = app.authenticate(username, password);
-        
-        if (account != null) {
-          String role = account.getRole();
-          app.dashboard(username, role);
-          break;
-        } else {
-          System.out.println("Invalid credentials!");
-          new Getch();
+    while (true) {
+      new Clrscr();
+      new Title();
+      System.out.print("username: ");
+      String username = in.nextLine();
+      System.out.print("password: ");
+      String password = in.nextLine();
+
+      User account = app.authenticate(username, password);
+
+      if (account != null) {
+        String role = account.getRole();
+        app.dashboard(username, role);
+      } else {
+        System.out.println("Invalid credentials!");
+        new Getch();
       }
     }
   }
-}
 }
