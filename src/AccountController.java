@@ -4,6 +4,9 @@ import java.util.Scanner;
 
 import custom.utils.Clrscr;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 
 public class AccountController {
@@ -23,10 +26,6 @@ public class AccountController {
     this.accounts = accounts;
   }
 
-  public void addAccount(User user) {
-    accounts.add(user);
-  }
-
   public void clearAccounts() {
     accounts.clear();
   }
@@ -42,12 +41,17 @@ public class AccountController {
     String username = in.nextLine();
     System.out.print("Enter password: ");
     String password = in.nextLine();
-    System.out.print("Enter role: ");
-    String role = in.nextLine();
+    String role = "";
+    boolean roleValid = role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("staff");
+    while (!roleValid) {
+      System.out.print("Enter role: ");
+      role = in.nextLine();
+      roleValid = role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("staff");
+    }
 
     User account = searchAccount(username, role);
     if (account == null) {
-      addAccount(new User(username, password, role));
+      accounts.add(new User(username, password, role)); // TODO: shoud use polymorphism ex. new Admin(); new Staff();
       System.out.println("Account Successfully Created.");
       return true;
     }
@@ -157,13 +161,11 @@ public class AccountController {
       System.out.println("Account does not exist.");
       return false;
     }
-    // TODO: verification to remove [Y/N]
-    Boolean confirmation = false;
 
+    Boolean confirmation = false;
     while (true) {
       boolean currentUserDeleting = currentUser.getAccountInfo().equals(user.getAccountInfo());
-      boolean superAccountDeleting = user.getId() == 101 && user.getUsername().equals("admin")
-          && user.getRole().equals("admin");
+      boolean superAccountDeleting = user.getRole().equalsIgnoreCase("super admin");
       if (superAccountDeleting) {
         System.out.println("ERROR: You can't delete super admin account.");
         return false;
@@ -183,10 +185,11 @@ public class AccountController {
         accounts.remove(accounts.indexOf(user));
         System.out.println("Account Deleted Successfully.");
         break;
-      } else {
+      } else if (ch == 'N') {
         System.out.println("Account Deleted Unsuccessfully.");
         break;
       }
+      new Clrscr();
     }
     return confirmation;
   }
@@ -196,7 +199,6 @@ public class AccountController {
     System.out.println("--------------------------------------------");
     System.out.printf("| %-4s | %-15s | %-15s |\n", "ID", "Username", "Role");
     System.out.println("--------------------------------------------");
-
     for (User user : accounts) {
       System.out.printf("| %-4d | %-15s | %-15s |\n", user.getId(), user.getUsername(), user.getRole());
       System.out.println("--------------------------------------------");
@@ -214,9 +216,80 @@ public class AccountController {
 
   private User searchAccount(String username, String role) {
     for (User account : accounts) {
-      boolean accountExisting = account.getUsername().equals(username) && account.getRole().equals(role);   
-      if (accountExisting) return account;
+      boolean accountExisting = account.getUsername().equals(username) && account.getRole().equals(role);
+      if (accountExisting)
+        return account;
     }
     return null;
+  }
+
+  // fetch methods
+  public void fetchAccountsFromDatabase() {
+    String filepath = "../res/data/account/users.csv";
+
+    try {
+      Scanner reader = new Scanner(new File(filepath));
+      boolean header = true;
+      while (reader.hasNextLine()) {
+        String line = reader.nextLine();
+        String[] fields = line.split(",");
+
+        // header = fields[0].equalsIgnoreCase("id") ? true : false;
+
+        if (!header) {
+          int id = Integer.parseInt(fields[0]);
+          String username = fields[1];
+          String password = fields[2];
+          String role = fields[3];
+          accounts.add(new User(id, username, password, role));
+        } else
+          header = false;
+      }
+      reader.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+    }
+  }
+
+  public void updateAccountDatabase(List<User> accounts) {
+    String origFilepath = "../res/data/account/users.csv";
+    String tempFilepath = "../res/data/account/temp.csv";
+
+    try {
+      Scanner reader = new Scanner(new File(origFilepath));
+      PrintWriter writer = new PrintWriter(new File(tempFilepath));
+      boolean header = true;
+
+      while (header) {
+        String line = reader.nextLine();
+        writer.print(line);
+        header = false;
+      }
+      for (User account : accounts) {
+        writer.printf("\n%d,%s,%s,%s", account.getId(), account.getUsername(), account.getPassword(),
+            account.getRole());
+      }
+      reader.close();
+      writer.close();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return;
+    }
+
+    File originalFile = new File(origFilepath);
+    File updatedFile = new File(tempFilepath);
+
+    if (originalFile.delete()) {
+      if (updatedFile.renameTo(originalFile)) {
+        // 200: CSV file updated successfully
+        System.out.println("[UPDATE STATUS: 200]");
+      } else {
+        // 404R: Couldn't rename file
+        System.out.println("[UPDATE STATUS: 404R]");
+      }
+    } else {
+      // 404D: Couldn't delete file
+      System.out.println("[UPDATE STATUS: 404D]");
+    }
   }
 }
