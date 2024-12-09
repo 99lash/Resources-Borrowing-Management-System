@@ -36,6 +36,11 @@ public class Student {
     return middleInitial;
   }
 
+  public String getFullName(String format) {
+    if (format.equals("fn-mi-ln")) return String.format("%s %s %s", firstName, middleInitial, lastName);
+    return String.format("%s, %s %s", lastName, firstName, middleInitial);
+  }
+
   public String getFullName() {
     return String.format("%s, %s %s", lastName, firstName, middleInitial);
   }

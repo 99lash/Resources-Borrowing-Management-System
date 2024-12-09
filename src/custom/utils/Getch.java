@@ -7,7 +7,7 @@ public class Getch {
   public Getch() {
     try {
       // Read a single byte (character)
-      System.out.print("\nPress any key to continue.");
+      System.out.print("\nPress Enter key to continue.");
       System.in.read();
       in.nextLine();
     } catch (IOException e) {
