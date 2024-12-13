@@ -23,8 +23,8 @@ public class LogController {
     auditLogs.clear();
   }
 
-  public void fetchTransactionLogFromDatabase() {
-    String filepath = "../res/logs/transaction/transaction_log.csv";
+  public void fetchTransactionLogsFromDatabase() {
+    String filepath = "./res/logs/transaction/transaction_log.csv";
     try {
       Scanner reader = new Scanner(new File(filepath));
       boolean header = true;
@@ -62,8 +62,8 @@ public class LogController {
   }
 
   public void updateTransactionLogDatabase() {
-    String origFilepath = "../res/logs/transaction/transaction_log.csv";
-    String tempFilepath = "../res/logs/transaction/transaction_log_temp.csv";
+    String origFilepath = "./res/logs/transaction/transaction_log.csv";
+    String tempFilepath = "./res/logs/transaction/transaction_log_temp.csv";
 
     try {
       Scanner reader = new Scanner(new File(origFilepath));
@@ -89,7 +89,6 @@ public class LogController {
       }
       reader.close();
       writer.close();
-      transactionsLog.clear();
     } catch (Exception e) {
       e.printStackTrace();
       return;

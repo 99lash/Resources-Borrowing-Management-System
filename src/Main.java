@@ -1,3 +1,4 @@
+import java.io.File;
 import java.util.Scanner;
 
 import custom.utils.Clrscr;
@@ -10,12 +11,11 @@ public class Main {
   public static void main(String[] args) {
     AppController app = new AppController();
     boolean login = true;
-
     while (login) {
       new Clrscr();
       new Title();
-      System.out.println("1.Sign in");
-      System.out.println("2.Exit");
+      System.out.println("[1] Sign in");
+      System.out.println("[2] Exit");
       System.out.print("Select: ");
       int choice = in.nextInt();
       in.nextLine();
@@ -47,3 +47,10 @@ public class Main {
     }
   }
 }
+
+/* 
+ * TODO:
+ * fix the transaction id duplication
+ * fix the layout of borrowing in pc, laptop, equipment
+ * 
+ */

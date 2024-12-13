@@ -2,20 +2,17 @@ public abstract class Resource {
   private int id;
   private String name;
   private String type;
-  private int quantity;
-  
+
   protected Resource(int id, String name, String type) {
     this.id = id;
     this.name = name;
     this.type = type;
-    this.quantity = 1;
   }
 
   protected Resource(int id, String name, String type, int quantity) {
     this.id = id;
     this.name = name;
     this.type = type;
-    this.quantity = quantity;
   }
 
   // GETTERS
@@ -31,12 +28,8 @@ public abstract class Resource {
     return type;
   }
 
-  public int getQuantity() {
-    return quantity;
-  }
-
   public String getDetails() {
-    return String.format("ID: %d\nName: %s\nType: %s\nQuantity: %d", id, name, type, quantity);
+    return String.format("ID: %d\nName: %s\nType: %s", id, name, type);
   }
 
   // SETTERS
@@ -51,20 +44,6 @@ public abstract class Resource {
   public void setType(String type) {
     this.type = type;
   }
-
-  public void setQuantity(int quantity) {
-    this.quantity = quantity;
-  }
-
-  // increment and decrement  methods
-  public void addStock(int quantity) {
-    this.quantity += quantity;
-  }
-
-  public void removeStock(int quantity) {
-    this.quantity -= quantity;
-  }
- 
 }
 
 /*

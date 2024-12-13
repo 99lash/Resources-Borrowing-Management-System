@@ -72,10 +72,10 @@ public class AccountController {
 
     User account = searchAccount(id);
     if (account != null) {
-      System.out.println("1.Username");
-      System.out.println("2.Password");
-      System.out.println("3.Role");
-      System.out.println("4.Cancel");
+      System.out.println("[1] Username");
+      System.out.println("[2] Password");
+      System.out.println("[3] Role");
+      System.out.println("[4] Cancel");
       System.out.print("Select account information to update: ");
       int ch = in.nextInt();
       in.nextLine();
@@ -84,32 +84,32 @@ public class AccountController {
         case 1:
           System.out.print("Enter new username: ");
           String newUsername = in.nextLine();
-          if (account.getUsername().equals(newUsername)) {
-            System.out.println("You cannot replace your old username with the same username. ");
-          } else {
+          if (!account.getUsername().equals(newUsername)) {
             account.setUsername(newUsername);
+            return true;
           }
-          break;
+          System.out.println("You cannot replace your old username with the same username. ");
+          return false;
 
         case 2:
           System.out.print("Enter new password: ");
           String newPassword = in.nextLine();
-          if (account.getPassword().equals(newPassword)) {
-            System.out.println("You cannot replace your old password with the same password. ");
-          } else {
+          if (!account.getPassword().equals(newPassword)) {
             account.setPassword(newPassword);
+            return true;
           }
-          break;
+          System.out.println("You cannot replace your old password with the same password. ");
+          return false;
 
         case 3:
           System.out.print("Enter new role: ");
           String newRole = in.nextLine();
           if (account.getRole().equals(newRole)) {
-            System.out.println("You cannot replace your old role with the same role. ");
-          } else {
             account.setRole(newRole);
+            return true;
           }
-          break;
+          System.out.println("You cannot replace your old role with the same role. ");
+          return false;
 
         case 4:
           return false;
@@ -118,8 +118,6 @@ public class AccountController {
           System.out.println("Invalid input! Please select between 1-4.");
           break;
       }
-      System.out.println("Account successfully updated.");
-      return true;
     }
     System.out.println("Account does not exist.");
     return false;
@@ -217,15 +215,14 @@ public class AccountController {
   private User searchAccount(String username, String role) {
     for (User account : accounts) {
       boolean accountExisting = account.getUsername().equals(username) && account.getRole().equals(role);
-      if (accountExisting)
-        return account;
+      if (accountExisting) return account;
     }
     return null;
   }
 
   // fetch methods
   public void fetchAccountsFromDatabase() {
-    String filepath = "../res/data/account/users.csv";
+    String filepath = "./res/data/account/users.csv";
 
     try {
       Scanner reader = new Scanner(new File(filepath));
@@ -251,9 +248,9 @@ public class AccountController {
     }
   }
 
-  public void updateAccountDatabase(List<User> accounts) {
-    String origFilepath = "../res/data/account/users.csv";
-    String tempFilepath = "../res/data/account/temp.csv";
+  public void updateAccountsDatabase(List<User> accounts) {
+    String origFilepath = "./res/data/account/users.csv";
+    String tempFilepath = "./res/data/account/temp.csv";
 
     try {
       Scanner reader = new Scanner(new File(origFilepath));

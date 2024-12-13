@@ -6,13 +6,13 @@ public class Laptop extends Resource {
     setStatus(status);
   }
 
-  // GETTERS
+  // GETTERS and SETTERS tabunuan niyo 'to
   public String getStatus() {
     return status;
   }
 
-  // SETTERS
   public void setStatus(String status) {
     this.status = status;
   }
+
 }

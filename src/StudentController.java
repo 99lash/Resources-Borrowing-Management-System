@@ -22,8 +22,8 @@ public class StudentController {
   }
 
 
-  public void fetchStudentDatabase() {
-    String filepath = "../res/data/masterlist/student_masterlist.csv";
+  public void fetchStudentsFromDatabase() {
+    String filepath = "./res/data/masterlist/student_masterlist.csv";
     try {
       Scanner reader = new Scanner(new File(filepath));
       
@@ -51,7 +51,7 @@ public class StudentController {
     }
   }
 
-  public void updateStudentDatabase() {
+  public void updateStudentsDatabase() {
     
   }
 }

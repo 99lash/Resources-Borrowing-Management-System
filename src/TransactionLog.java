@@ -25,12 +25,16 @@ public class TransactionLog {
     this.status = status;
   }
   
-  public TransactionLog(int transactionId, String studentNo, String studentName, String collateral, String itemName, int itemDesination, LocalDateTime borrowDateTime, LocalDateTime returnDateTime, String issuer, String reciever) {
+  public TransactionLog(int transactionId, String studentNo, String studentName, String collateral, String itemName, LocalDateTime borrowDateTime, LocalDateTime returnDateTime, String issuer, String reciever) {
     this.transactionId = transactionId;
     this.studentNo = studentNo;
     this.studentName = studentName;
     this.collateral = collateral;
-    this.itemName = String.format("%s (CL%d)", itemName, itemDesination);
+    if (itemName.equalsIgnoreCase("PC")) {
+      this.itemName = String.format("%s (CL%c)", itemName, itemName.charAt(itemName.length()-1));
+    } else {
+      this.itemName = itemName;
+    }
     this.borrowDateTime = borrowDateTime;
     this.returnDateTime = returnDateTime;
     this.issuer = issuer;

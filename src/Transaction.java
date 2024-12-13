@@ -1,7 +1,6 @@
 import java.time.LocalDateTime;
 
 public abstract class Transaction {
-  private static int transactionCount = 1000;
   private int transactionId;
   private String studentNo;
   private String studentName;
@@ -16,7 +15,6 @@ public abstract class Transaction {
   private String status;
 
   public Transaction(String studentNo, String studentName, String collateral, int itemId, String itemName, LocalDateTime borrowDateTime, String issuer) {
-    this.transactionId = ++transactionCount;
     this.studentNo = studentNo;
     this.studentName = studentName;
     this.collateral = collateral;
@@ -31,7 +29,6 @@ public abstract class Transaction {
   }
 
   public Transaction(int transactionId, String studentNo, String studentName, String collateral, int itemId, String itemName, LocalDateTime borrowDateTime, LocalDateTime returnDateTime, String issuer, String reciever, String status) {
-    transactionCount = transactionId;
     this.transactionId = transactionId;
     this.studentNo = studentNo;
     this.studentName = studentName;
@@ -49,13 +46,13 @@ public abstract class Transaction {
   public abstract String getTransactionDetails();
 
   // GETTERS & SETTERS
-  public static int getTransactionCount() {
-    return transactionCount;
-  }
+  // public static int getTransactionCount() {
+  //   return transactionCount;
+  // }
 
-  public static void setTransactionCount(int transactionCount) {
-    Transaction.transactionCount = transactionCount;
-  }
+  // public static void setTransactionCount(int transactionCount) {
+  //   Transaction.transactionCount = transactionCount;
+  // }
 
   public int getTransactionId() {
     return transactionId;
@@ -153,6 +150,4 @@ public abstract class Transaction {
     this.status = status;
   }
 
-
-  
 }
