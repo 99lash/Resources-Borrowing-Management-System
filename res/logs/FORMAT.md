@@ -1,3 +1,4 @@
+**AUDIT LOG**
 Timestamp          User            Event               Entity                 Details
 -----------------------------------------------------------------------------------------
 2024-12-08 08:00   johndoe         LOGIN               N/A                   Successful login
@@ -20,3 +21,10 @@ Timestamp          User            Event               Entity                 De
 2024-12-08 09:20   System          ERROR               Database              Connection timed out
 2024-12-08 09:25   System          WARNING             Memory Usage          Memory usage exceeded 80%
 2024-12-08 09:30   johndoe         LOGOUT              N/A                   User logged out
+
+**TRANSACTION LOG**
+Timestamp          Person                               Event              Transaction ID          Details                   Status
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+2024-12-10 14:35   LANCE ALCALDE    #20230183-s         BORROW             TXN-0012345678          borrowed Laptop1 #1       Success
+2024-12-10 15:00   JOHN ASHER MANIT #20230184-S         RETURN             TXN-0012345679          Returned PC2-CL1 #2       Success
+2024-12-10 15:15   JOSHUA COLMO     #123123-S           BORROW             TXN-0012345680          Borrowed PC1-Cl1 #1       Failed
