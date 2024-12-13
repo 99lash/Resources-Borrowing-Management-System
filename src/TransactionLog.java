@@ -39,7 +39,7 @@ public class TransactionLog {
     this.returnDateTime = returnDateTime;
     this.issuer = issuer;
     this.reciever = reciever;
-    this.status = returnDateTime != null ? "returned" : "borrowed";
+    this.status = returnDateTime != null ? "Returned" : "Borrowed";
   }
 
 

@@ -19,6 +19,107 @@ public class TransactionController {
     equipmentTransactions = new ArrayList<>();
   }
 
+
+  public void displayComputerTransactionsList() {
+    System.out.println("List of Computer Borrowers");
+    System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    System.out.printf("| %-8s | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", "Trans ID", "Borrower Student No.", "Borrower Name", "Collateral", "Item Borrowed", "Borrowed Date & Time", "Returned Date & Time", "Issuer", "Reciever", "Status");
+    System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    if (computerTransactions.isEmpty()) {
+      System.out.println("| No Transaction Records :D \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t     |");
+      System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    } else {
+      int size = computerTransactions.size()-1;
+      int displayCount = 1;
+      for (int i = size; i >= 0; i--) {
+        if (displayCount > 5) break; 
+        displayCount++;
+        computerTransactions.get(i).getTransactionId();
+        int transactionId = computerTransactions.get(i).getTransactionId();
+        String borrowerStudentNo = computerTransactions.get(i).getStudentNo();
+        String borrowerStudentName = computerTransactions.get(i).getStudentName();
+        String collateral = computerTransactions.get(i).getCollateral();
+        String itemName = String.format("%s (CL%d)", computerTransactions.get(i).getItemName(), computerTransactions.get(i).getDestination());
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a");
+        String borrowDateTime = computerTransactions.get(i).getBorrowDateTime().format(formatter);
+        String returnDateTime = computerTransactions.get(i).getReturnDateTime() == null? "N/A" : computerTransactions.get(i).getReturnDateTime().format(formatter);
+        String issuer = computerTransactions.get(i).getIssuer();
+        String reciever = computerTransactions.get(i).getReciever();
+        String status = computerTransactions.get(i).getStatus() == null ? "N/A" : computerTransactions.get(i).getStatus();
+        System.out.printf("| %-8d | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", transactionId, borrowerStudentNo, borrowerStudentName, collateral, itemName, borrowDateTime, returnDateTime, issuer, reciever, status);
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+      }
+    }
+    System.out.println("\n\n");
+  }
+
+  public void displayLaptopTransactionsList() {
+    System.out.println("List of Laptop Borrowers");
+    System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    System.out.printf("| %-8s | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", "Trans ID", "Borrower Student No.", "Borrower Name", "Collateral", "Item Borrowed", "Borrowed Date & Time", "Returned Date & Time", "Issuer", "Reciever", "Status");
+    System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    if (laptopTransactions.isEmpty()) {
+      System.out.println("| No Transaction Records :D \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t     |");
+      System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    } else {
+      int size = laptopTransactions.size()-1;
+      int displayCount = 1;
+      for (int i = size; i >= 0; i--) {
+        if (displayCount > 5) break; 
+        displayCount++;
+        laptopTransactions.get(i).getTransactionId();
+        int transactionId = laptopTransactions.get(i).getTransactionId();
+        String borrowerStudentNo = laptopTransactions.get(i).getStudentNo();
+        String borrowerStudentName = laptopTransactions.get(i).getStudentName();
+        String collateral = laptopTransactions.get(i).getCollateral();
+        String itemName = laptopTransactions.get(i).getItemName();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a");
+        String borrowDateTime = laptopTransactions.get(i).getBorrowDateTime().format(formatter);
+        String returnDateTime = laptopTransactions.get(i).getReturnDateTime() == null? "N/A" : laptopTransactions.get(i).getReturnDateTime().format(formatter);
+        String issuer = laptopTransactions.get(i).getIssuer();
+        String reciever = laptopTransactions.get(i).getReciever();
+        String status = laptopTransactions.get(i).getStatus() == null ? "N/A" : laptopTransactions.get(i).getStatus();
+        System.out.printf("| %-8d | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", transactionId, borrowerStudentNo, borrowerStudentName, collateral, itemName, borrowDateTime, returnDateTime, issuer, reciever, status);
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+      }
+    }
+    System.out.println("\n\n");
+  }
+
+  public void displayEquipmentTransactionsList() {
+    System.out.println("List of Equipment Borrowers");
+    System.out.println("+----------+----------------------+--------------------------------+------------+----------------------+----------+----------------------+----------------------+------------+------------+----------+");
+    System.out.printf("| %-8s | %-20s | %-30s | %-10s | %-20s | %-8s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", "Trans ID", "Borrower Student No.", "Borrower Name", "Collateral", "Item Borrowed", "Quantity", "Borrowed Date & Time", "Returned Date & Time", "Issuer", "Reciever", "Status");
+    System.out.println("+----------+----------------------+--------------------------------+------------+----------------------+----------+----------------------+----------------------+------------+------------+----------+");
+    if (equipmentTransactions.isEmpty()) {
+      System.out.println("| No Transaction Records :D \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t       |");
+      System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    } else {
+      int size = equipmentTransactions.size()-1;
+      int displayCount = 1;
+      for (int i = size; i >= 0; i--) {
+        if (displayCount > 5) break; 
+        displayCount++;
+        equipmentTransactions.get(i).getTransactionId();
+        int transactionId = equipmentTransactions.get(i).getTransactionId();
+        String borrowerStudentNo = equipmentTransactions.get(i).getStudentNo();
+        String borrowerStudentName = equipmentTransactions.get(i).getStudentName();
+        String collateral = equipmentTransactions.get(i).getCollateral();
+        String itemName = equipmentTransactions.get(i).getItemName();
+        int borrowQuantity = equipmentTransactions.get(i).getBorrowQuantity();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a");
+        String borrowDateTime = equipmentTransactions.get(i).getBorrowDateTime().format(formatter);
+        String returnDateTime = equipmentTransactions.get(i).getReturnDateTime() == null? "N/A" : equipmentTransactions.get(i).getReturnDateTime().format(formatter);
+        String issuer = equipmentTransactions.get(i).getIssuer();
+        String reciever = equipmentTransactions.get(i).getReciever();
+        String status = equipmentTransactions.get(i).getReturnDateTime() == null ? "Borrowed" : "Returned";
+        System.out.printf("| %-8d | %-20s | %-30s | %-10s | %-20s | %-8d | %-20s | %-20s | %-10s | %-10s | %-8s |\n", transactionId, borrowerStudentNo, borrowerStudentName, collateral, itemName, borrowQuantity, borrowDateTime, returnDateTime, issuer, reciever, status);
+        System.out.println("+----------+----------------------+--------------------------------+------------+----------------------+----------+----------------------+----------------------+------------+------------+----------+");
+      }
+    }
+    System.out.println("\n\n");
+  }
+
   public void clearTransactionsHeader() {
     transactionsHeader.clear();
   }

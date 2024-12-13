@@ -116,14 +116,43 @@ public class AppController {
       new Getch();
     }
   }
+  
+  public String stringMenu(String switchEvent, String role) {
+    String s = "";
+    if (role.equalsIgnoreCase("admin")) {
+      s += String.format("[%sMain Menu%s]\n\n", GREEN, RESET);
+      s += String.format("[%s1%s] Borrow an Item\n", GREEN, RESET);
+      s += String.format("[%s2%s] Return an Item\n", GREEN, RESET);
+      s += String.format("[%s3%s] View List of Computer Borrower\n", GREEN, RESET);
+      s += String.format("[%s4%s] View List of Laptop Borrower\n", GREEN, RESET);
+      s += String.format("[%s5%s] View List of Equipment Borrower\n", GREEN, RESET);
+      s += String.format("[%s6%s] View Audit Log\n", GREEN, RESET);
+      s += String.format("[%s7%s] View Admin Operations\n", GREEN, RESET);
+      s += String.format("[%s8%s] %s Transactions Log\n", GREEN, RESET, switchEvent);
+      s += String.format("[%s9%s] Log out\n", GREEN, RESET);
+    } else {
+      s += String.format("[%sMain Menu%s]\n\n", GREEN, RESET);
+      s += String.format("[%s1%s] Borrow an Item\n", GREEN, RESET);
+      s += String.format("[%s2%s] Return an Item\n", GREEN, RESET);
+      s += String.format("[%s3%s] View List of Computer Borrower\n", GREEN, RESET);
+      s += String.format("[%s4%s] View List of Laptop Borrower\n", GREEN, RESET);
+      s += String.format("[%s5%s] View List of Equipment Borrower\n", GREEN, RESET);
+      s += String.format("[%s6%s] View Audit Log\n", GREEN, RESET);
+      s += String.format("[%s7%s] View Inventory\n", GREEN, RESET);
+      s += String.format("[%s8%s] %s Transactions Log\n", GREEN, RESET, switchEvent);
+      s += String.format("[%s9%s] Log out\n", GREEN, RESET);
+    }
 
+    return s;
+  }
+  
   public void adminDashboard(String username) {
     boolean running = true;
     boolean show = true;
     while (running) {
       new Clrscr();
       new Title();
-      String switchEvent = show ? " Hide " : " Show ";
+      String switchEvent = show ? "Hide" : "Show";
       System.out.println("\t\t\t\t\t\t\t\t\t\tWelcome back, " + username + "!");
       System.out.println();
       if (show) {
@@ -131,16 +160,9 @@ public class AppController {
         logController.displayAllTranscationLogs();
         logController.clearTransactionLog();
       } else {
-        System.out.println("Recent Transactions [Log] (Hidden)\n\n\n\n\n\n\n\n");
+        System.out.println("Transactions [Log] (Hidden)\n\n\n\n\n\n\n\n");
       }
-      System.out.println("[" + GREEN + "Main Menu" + RESET + "]\n");
-      System.out.println("[" + GREEN + "1" + RESET + "]" + " Borrow an Item");
-      System.out.println("[2] Return an Item");
-      System.out.println("[3] View Borrower list");
-      System.out.println("[4] View Audit Log");
-      System.out.println("[5] Admin Operations");
-      System.out.println("[6]" + switchEvent + "Transactions Log");
-      System.out.println("[7] Log out");
+      System.out.print(stringMenu(switchEvent,"admin"));
       System.out.print("Select: ");
       int ch = in.nextInt();
       in.nextLine();
@@ -155,22 +177,30 @@ public class AppController {
           break;
 
         case 3:
-          System.out.println("View borrower list");
+          computerBorrowersList();
           break;
 
         case 4:
-          System.out.println("View audit log");
+          laptopBorrowersList();
           break;
-        
+
         case 5:
-          administrativeOperations();
+          equipmentBorrowersList();
           break;
 
         case 6:
+          System.out.println("View audit log");
+          break;
+        
+        case 7:
+          administrativeOperations();
+          break;
+
+        case 8:
           show = !show;
           break;
 
-        case 7:
+        case 9:
           running = false;
           break;
         default:
@@ -301,22 +331,15 @@ public class AppController {
     while (running) {
       new Clrscr();
       new Title();
-      String switchEvent = show ? " Hide " : " Show ";
+      String switchEvent = show ? "Hide" : "Show";
       if (show) {
         logController.fetchTransactionLogsFromDatabase();
         logController.displayAllTranscationLogs();
         logController.clearTransactionLog();
       } else {
-        System.out.println("Recent Transactions [Log] (Hidden)\n\n\n\n\n\n\n\n");
+        System.out.println("Transactions [Log] (Hidden)\n\n\n\n\n\n\n\n");
       }
-      System.out.println("[Main Menu]\n");
-      System.out.println("[1] Borrow an Item");
-      System.out.println("[2] Return an Item");
-      System.out.println("[3] View borrower list");
-      System.out.println("[4] View Audit Log");
-      System.out.println("[5] View Inventory");
-      System.out.println("[6]" + switchEvent + "Transactions Log");
-      System.out.println("[7] Log out");
+      System.out.print(stringMenu(switchEvent, "staff"));
       System.out.print("Select: ");
       int ch = in.nextInt();
 
@@ -331,22 +354,30 @@ public class AppController {
           break;
 
         case 3:
-          System.out.println("View borrower list");
+          computerBorrowersList();
           break;
 
         case 4:
-          System.out.println("View audit log");
+          laptopBorrowersList();
           break;
 
         case 5:
-          System.out.println("View inventory");
+          equipmentBorrowersList();
           break;
 
         case 6:
-          show = !show;
+          System.out.println("View audit log");
           break;
 
         case 7:
+          System.out.println("View inventory");
+          break;
+
+        case 8:
+          show = !show;
+          break;
+
+        case 9:
           running = false;
           break;
 
@@ -538,7 +569,7 @@ public class AppController {
       }
     }
   }
-
+  
   private void borrowingForm() {
     boolean running = true;
     while (running) {
@@ -571,10 +602,6 @@ public class AppController {
           return;
       }
     }
-  }
-
-  private void returningForm() {
-    System.out.println("--Returning Form--");
   }
 
   public void computerBorrowForm() {
@@ -668,5 +695,36 @@ public class AppController {
     }
     new Getch();
     equipments.clear();
+  }
+
+  private void returningForm() {
+    System.out.println("--Returning Form--");
+  }
+
+  public void computerBorrowersList() {
+    new Clrscr();
+    new Title();
+    transactionController.fetchComputerTransactionsFromDatabase();
+    transactionController.displayComputerTransactionsList();
+    transactionController.clearComputerTransactions();
+    new Getch();
+  } 
+
+  public void laptopBorrowersList() {
+    new Clrscr();
+    new Title();
+    transactionController.fetchLaptopTransactionsFromDatabase();
+    transactionController.displayLaptopTransactionsList();
+    transactionController.clearLaptopTransactions();
+    new Getch();
+  }
+
+  public void equipmentBorrowersList() {
+    new Clrscr();
+    new Title();
+    transactionController.fetchEquipmentTransactionsFromDatabase();
+    transactionController.displayEquipmentTransactionsList();
+    transactionController.clearEquipmentTransactions();
+    new Getch();
   }
 }

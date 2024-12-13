@@ -1,1 +1,2 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemId,itemName,itemDestination,borrowDateTime,returnDateTime,issuer,reciever,status
+1001,20230184-S,JOHN ASHER M. MANIT,meow,1,PC1,1,12-13-2024 09:51 PM,N/A,admin,N/A,borrowed

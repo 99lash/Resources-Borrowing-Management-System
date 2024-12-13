@@ -1,1 +1,2 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemId,itemName,borrowDateTime,returnDateTime,issuer,reciever,status
+1002,20230184-S,JOHN ASHER M. MANIT,asdasd,1,LAPTOP1,12-13-2024 10:10 PM,N/A,admin,N/A,Borrowed

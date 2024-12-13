@@ -41,11 +41,13 @@ public class LogController {
           String collateral = fields[3];
           String itemName = fields[4];
           LocalDateTime borrowDateTime = LocalDateTime.parse(fields[5], formatter);
-          LocalDateTime returnDateTime = fields[6].equalsIgnoreCase("N/A") ? null : LocalDateTime.parse(fields[6], formatter);
+          LocalDateTime returnDateTime = fields[6].equalsIgnoreCase("N/A") ? null
+              : LocalDateTime.parse(fields[6], formatter);
           String issuer = fields[7];
           String reciver = fields[8];
           String status = fields[9];
-          transactionsLog.add(new TransactionLog(transactionId, studentNo, studentName, collateral, itemName, borrowDateTime, returnDateTime, issuer, reciver, status));
+          transactionsLog.add(new TransactionLog(transactionId, studentNo, studentName, collateral, itemName,
+              borrowDateTime, returnDateTime, issuer, reciver, status));
         } else {
           header = false;
         }
@@ -68,10 +70,10 @@ public class LogController {
     try {
       Scanner reader = new Scanner(new File(origFilepath));
       PrintWriter writer = new PrintWriter(new File(tempFilepath));
-      
+
       String line = reader.nextLine();
-      writer.print(line);      
-      
+      writer.print(line);
+
       for (TransactionLog transactionLog : transactionsLog) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy hh:mm a");
         int transactionId = transactionLog.getTransactionId();
@@ -81,11 +83,14 @@ public class LogController {
         String itemName = transactionLog.getItemName();
 
         String borrowDateTime = transactionLog.getBorrowDateTime().format(formatter);
-        String returnDateTime = (transactionLog.getReturnDateTime() != null) ? transactionLog.getReturnDateTime().format(formatter) : "N/A"; 
+        String returnDateTime = (transactionLog.getReturnDateTime() != null)
+            ? transactionLog.getReturnDateTime().format(formatter)
+            : "N/A";
         String issuer = transactionLog.getIssuer();
         String reciever = transactionLog.getReciever();
         String status = transactionLog.getStatus();
-        writer.printf("\n%d,%s,%s,%s,%s,%s,%s,%s,%s,%s", transactionId, studentNo, studentName, collateral, itemName, borrowDateTime, returnDateTime, issuer, reciever, status);
+        writer.printf("\n%d,%s,%s,%s,%s,%s,%s,%s,%s,%s", transactionId, studentNo, studentName, collateral, itemName,
+            borrowDateTime, returnDateTime, issuer, reciever, status);
       }
       reader.close();
       writer.close();
@@ -96,7 +101,7 @@ public class LogController {
 
     File originalFile = new File(origFilepath);
     File updatedFile = new File(tempFilepath);
-   
+
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
@@ -115,50 +120,79 @@ public class LogController {
 
   }
 
+  // public void displayAllTranscationLogs() {
+  // System.out.println("Recent Transactions [Log] (Visible) ");
+  // System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+  // System.out.printf("| %-8s | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s |
+  // %-10s | %-10s | %-8s |\n", "Trans ID", "Borrower Student No.", "Borrower
+  // Name", "Collateral", "Item Borrowed", "Borrowed Date & Time", "Returned Date
+  // & Time", "Issuer", "Reciever", "Status");
+  // System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+  // if (transactionsLog.isEmpty()) {
+  // System.out.println("| No Transaction Records :D
+  // \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t |");
+  // System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+  // } else {
+  // int size = transactionsLog.size()-1;
+  // int displayCount = 1;
+  // for (int i = size; i >= 0; i--) {
+  // if (displayCount > 5) break;
+  // displayCount++;
+  // transactionsLog.get(i).getTransactionId();
+  // int transactionId = transactionsLog.get(i).getTransactionId();
+  // String borrowerStudentNo = transactionsLog.get(i).getStudentNo();
+  // String borrowerStudentName = transactionsLog.get(i).getStudentName();
+  // String collateral = transactionsLog.get(i).getCollateral();
+  // String itemName = transactionsLog.get(i).getItemName();
+  // DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm
+  // a");
+  // String borrowDateTime =
+  // transactionsLog.get(i).getBorrowDateTime().format(formatter);
+  // String returnDateTime = transactionsLog.get(i).getReturnDateTime() == null?
+  // "N/A" : transactionsLog.get(i).getReturnDateTime().format(formatter);
+  // String issuer = transactionsLog.get(i).getIssuer();
+  // String reciever = transactionsLog.get(i).getReciever();
+  // String status = transactionsLog.get(i).getStatus() == null ? "N/A" :
+  // transactionsLog.get(i).getStatus();
+  // System.out.printf("| %-8d | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s |
+  // %-10s | %-10s | %-8s |\n", transactionId, borrowerStudentNo,
+  // borrowerStudentName, collateral, itemName, borrowDateTime, returnDateTime,
+  // issuer, reciever, status);
+  // System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+  // }
+
+  // }
+  // System.out.println("\n\n");
+  // }
+
   public void displayAllTranscationLogs() {
-    System.out.println("Recent Transactions [Log] (Visible) ");
-    System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
-    System.out.printf("| %-8s | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", "Trans ID", "Borrower Student No.", "Borrower Name", "Collateral", "Item Borrowed", "Borrowed Date & Time", "Returned Date & Time", "Issuer", "Reciever", "Status");
-    System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+    System.out.println("Transactions Log (Visible)");
+    System.out.println("------------------------------------------------------------------------------------------------------------------------");
+    System.out.printf("%-20s %-40s %-10s %-20s %-30s %-10s\n", "Timestamp", "Person", "Event", "Transaction ID", "Details", "Status");
+    System.out.println("------------------------------------------------------------------------------------------------------------------------");
+
     if (transactionsLog.isEmpty()) {
-      System.out.println("| No Transaction Records :D \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t     |");
-      System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+      System.out.println("No Transaction Records.");
     } else {
-      int size = transactionsLog.size()-1;
-      int displayCount = 1;
-      for (int i = size; i >= 0; i--) {
-        if (displayCount > 5) break; 
-        displayCount++;
-        transactionsLog.get(i).getTransactionId();
-        int transactionId = transactionsLog.get(i).getTransactionId();
-        String borrowerStudentNo = transactionsLog.get(i).getStudentNo();
-        String borrowerStudentName = transactionsLog.get(i).getStudentName();
-        String collateral = transactionsLog.get(i).getCollateral();
-        String itemName = transactionsLog.get(i).getItemName();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a");
-        String borrowDateTime = transactionsLog.get(i).getBorrowDateTime().format(formatter);
-        String returnDateTime = transactionsLog.get(i).getReturnDateTime() == null? "N/A" : transactionsLog.get(i).getReturnDateTime().format(formatter);
-        String issuer = transactionsLog.get(i).getIssuer();
-        String reciever = transactionsLog.get(i).getReciever();
-        String status = transactionsLog.get(i).getStatus() == null ? "N/A" : transactionsLog.get(i).getStatus();
-        System.out.printf("| %-8d | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", transactionId, borrowerStudentNo, borrowerStudentName, collateral, itemName, borrowDateTime, returnDateTime, issuer, reciever, status);
-        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+      for (int i = 0; i < transactionsLog.size(); i++) {
+        boolean isBorrowing = transactionsLog.get(i).getReturnDateTime() == null;
+        String timestamp = "";
+        String event = "";
+        if (isBorrowing) {
+          timestamp = transactionsLog.get(i).getBorrowDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
+          event = "Borrow";
+        } else {
+          timestamp = transactionsLog.get(i).getReturnDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"));
+          event = "Return";
+        }
+        String person = String.format("%s #%s", transactionsLog.get(i).getStudentName(), transactionsLog.get(i).getStudentNo());
+        String transactionId = String.format("#%s", transactionsLog.get(i).getTransactionId());
+        // String details = transactionsLog.get(i).getDetails();
+        // String status = transactionsLog.get(i).getStatus();
+
+        System.out.printf("%-20s %-40s %-10s %-20s %-30s %-10s\n",
+            timestamp, person, event, transactionId, "details", "status");
       }
-      // for (TransactionLog transactionLog : transactionsLog) {
-      //   int transactionId = transactionLog.getTransactionId();
-      //   String borrowerStudentNo = transactionLog.getStudentNo();
-      //   String borrowerStudentName = transactionLog.getStudentName();
-      //   String collateral = transactionLog.getCollateral();
-      //   String itemName = transactionLog.getItemName();
-      //   DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy hh:mm a");
-      //   String borrowDateTime = transactionLog.getBorrowDate().format(formatter);
-      //   String returnDateTime = transactionLog.getReturnDate() == null? "N/A" : transactionLog.getReturnDate().format(formatter);
-      //   String issuer = transactionLog.getIssuer();
-      //   String reciever = transactionLog.getReciever();
-      //   String status = transactionLog.getStatus() == null ? "N/A" : transactionLog.getStatus();
-      //   System.out.printf("| %-8d | %-20s | %-30s | %-10s | %-15s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", transactionId, borrowerStudentNo, borrowerStudentName, collateral, itemName, borrowDateTime, returnDateTime, issuer, reciever, status);
-      //   System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+----------------------+----------------------+------------+------------+----------+");
-      // }
     }
     System.out.println("\n\n");
   }

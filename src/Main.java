@@ -48,9 +48,39 @@ public class Main {
   }
 }
 
-/* 
- * TODO:
- * fix the transaction id duplication
- * fix the layout of borrowing in pc, laptop, equipment
+/*
+ * TODO @ 12/14/24
+ * Find a way to implement status and details in Transaction Log | Location:
+ * (LogController.java, TransactionLog.java, AppController.java)
+ * 
+ * 
+ * 
+ * 
+ * 
+ * TODO LIST: [4/11]
+ * 
+ * !! Major Features (Needed ASAP) [3/8]
+ * ✅ Borrow an Item
+ * 🖕 Return an Item
+ * 🟠 Borrower Log
+ * ✅ Borrower List
+ * 🖕 Audit Log
+ * 🖕 Manage Student Master list
+ * 🖕 Manage Inventory
+ * ✅ Manage Account
+ * 
+ * !! Nothing major but needed [1/3]
+ * ✅ change the role of default admin to super admin
+ * 🖕 Hide password input
+ * 🟠 Try catch for input (para hindi mag exit and program)
+ * 
+ * PROJECT PROGRESS: 4/11 = 36%
+ * 
+ * LEGEND:
+ * 🖕TODO
+ * 🟠IN PROGRESS
+ * ✅DONE
+ * 
+ * 
  * 
  */

@@ -1,5 +1,5 @@
 itemId,itemName,type,status,destination
-1,PC1,Computer,Available,1
+1,PC1,Computer,Not Available,1
 2,PC2,Computer,Available,1
 3,PC3,Computer,Available,1
 4,PC4,Computer,Available,1

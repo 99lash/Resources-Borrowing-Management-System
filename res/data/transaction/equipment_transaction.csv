@@ -1,1 +1,2 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemId,itemName,borrowQuantity,borrowDateTime,returnDateTime,issuer,reciever,status
+1003,20230184-S,JOHN ASHER M. MANIT,asdasd,6,REMOTE (SKY WORTH),1,12-13-2024 10:28 PM,N/A,admin,N/A,Borrowed
