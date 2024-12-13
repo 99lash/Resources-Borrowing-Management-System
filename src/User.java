@@ -15,7 +15,7 @@ public class User {
 
   User(int id, String username, String password, String  role) {
     userCount = id;
-    this.id = id++;
+    this.id = id;
     this.username = username;
     this.password = password;
     this.role = role;
