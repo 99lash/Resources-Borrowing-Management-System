@@ -1,0 +1,12 @@
+itemId,itemName,type,quantity,availableQuantity,status
+1,Screen Projector,Equipment,5,4,Available
+2,HDMI Cable,Equipment,5,4,Available
+3,Screw Driver,Equipment,5,5,Available
+4,RJ45 Crimping Tool,Equipment,5,5,Available
+5,Electric Fan,Equipment,5,5,Available
+6,Remote (SKY WORTH),Equipment,1,1,Not Available
+7,Remote (ACE),Equipment,1,0,Not Available
+8,REMOTE (KKJBL),Equipment,1,1,Available
+9,Speaker,Equipment,2,2,Available
+10,Microphone,Equipment,3,3,Available
+11,Power Cord,Equipment,3,3,Available

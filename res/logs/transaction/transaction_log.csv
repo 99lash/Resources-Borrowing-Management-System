@@ -1,7 +1,1 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemName,borrowDateTime,returnDateTime,issuer,reciever,status
-1001,20230184-S,JOHN ASHER M. MANIT,weowe,PC1 (CL1),12-10-2024 12:36 AM,N/A,admin,N/A,borrowed
-1002,20230183-S,LANCE KERWIN D. ALCALDE,asdsad,PC2 (CL1),12-10-2024 12:36 AM,N/A,admin,N/A,borrowed
-1003,20230184-S,JOHN ASHER M. MANIT,sadsad,PC3 (CL1),12-10-2024 12:48 AM,N/A,staff,N/A,borrowed
-1004,20230183-S,LANCE KERWIN D. ALCALDE,asdadasd,PC4 (CL1),12-10-2024 12:48 AM,N/A,staff,N/A,borrowed
-1005,20230184-S,JOHN ASHER M. MANIT,asdasdasd,PC5 (CL1),12-10-2024 12:49 AM,N/A,admin,N/A,borrowed
-1006,20230183-S,LANCE KERWIN D. ALCALDE,asdasd,PC6 (CL1),12-10-2024 12:49 AM,N/A,admin,N/A,borrowed
