@@ -56,9 +56,9 @@ public class InventoryController {
   public void showAvailableComputers(int destination) {
     int divider = 0;
     fetchComputersFromDatabase(destination);
-    System.out.println("----------------------------------");
+    System.out.println("------------------------------------------------------");
     System.out.println("Computer Lab " + destination + " - Available Computers");
-    System.out.println("----------------------------------");
+    System.out.println("------------------------------------------------------");
 
     for (Computer computer : computers) {
       if (divider == 5) {
@@ -78,29 +78,31 @@ public class InventoryController {
     fetchLaptopsFromDatabase();
     System.out.println("\n+---------------------------------------------------------------------------------------+");
     System.out.print("|\t\t\t\t    Available Laptops  \t\t\t\t\t|");;
-    System.out.println("\n+---------------------------------------------------------------------------------------+");
-    System.out.println("|\t\t\t\t\t\t\t\t\t\t\t|");
+    System.out.println("\n+---------------------------------------------------------------------------------------+\n");
     for (Laptop laptop : laptops) {
       if (divider == 5) {
-        System.out.println("|\n|\t\t\t\t\t\t\t\t\t\t\t|");
+        System.out.println("\n");
         divider = 0;
       }
       if (laptop.getStatus().equalsIgnoreCase("available")) {
         if (divider == 0) {
-          System.out.printf("|\t[%s]\t", laptop.getName());
+          System.out.printf("\t[%s]\t", laptop.getName());
         } else {
           System.out.printf("[%s]\t", laptop.getName());
         }
         divider++;
       }
     }
-    System.out.print("|\n|\t\t\t\t\t\t\t\t\t\t\t|");
-    System.out.println("\n+---------------------------------------------------------------------------------------+");
+    System.out.println("\n\n-----------------------------------------------------------------------------------------");
   }
   
   public void showAvailableEquipments() {
     fetchEquipmentsFromDatabase();
     int itemId = 1;
+    
+    System.out.println("\n+---------------------------------------------------------------------------------------+");
+    System.out.print("|\t\t\t\t    Available Equipments  \t\t\t\t|");;
+    System.out.println("\n+---------------------------------------------------------------------------------------+\n");
     System.out.printf("\t%-7s\t\t%-20s\t%-9s\t%-20s\n","Item ID", "Equipment", "Quantity", "Available Quantity");
     System.out.println("+---------------------------------------------------------------------------------------+");
     for(Equipment equipment : equipments) {

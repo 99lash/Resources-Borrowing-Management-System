@@ -104,7 +104,7 @@ public class AccountController {
         case 3:
           System.out.print("Enter new role: ");
           String newRole = in.nextLine();
-          if (account.getRole().equals(newRole)) {
+          if (!account.getRole().equals(newRole)) {
             account.setRole(newRole);
             return true;
           }

@@ -153,14 +153,14 @@ public class AppController {
       new Clrscr();
       new Title();
       String switchEvent = show ? "Hide" : "Show";
-      System.out.println("\t\t\t\t\t\t\t\t\t\tWelcome back, " + username + "!");
-      System.out.println();
+      // System.out.println("\t\t\t\t\t\t\t\t\t\tWelcome back, " + username + "!");
+      System.out.println("\t\tWelcome back, " + username + "!\n\n");
       if (show) {
         logController.fetchTransactionLogsFromDatabase();
         logController.displayAllTranscationLogs();
         logController.clearTransactionLog();
       } else {
-        System.out.println("Transactions [Log] (Hidden)\n\n\n\n\n\n\n\n");
+        System.out.println("Transactions Log (Hidden)\n\n\n\n\n\n\n\n");
       }
       System.out.print(stringMenu(switchEvent,"admin"));
       System.out.print("Select: ");
@@ -304,8 +304,9 @@ public class AppController {
             accountController.updateAccountsDatabase(accountController.getAccounts());
             accountController.clearAccounts();
             new Getch();
-            new Main().main(null);
-          } else if (success)
+            new Main().main(null); // may bug dito. flow kapag nag exit babalik sa dito sa function ManageAccount() na ito. 
+            // return;
+          } else if (success) 
             accountController.updateAccountsDatabase(accountController.getAccounts());
           accountController.clearAccounts();
           new Getch();
@@ -499,8 +500,8 @@ public class AppController {
         ComputerTransaction newComputerTransaction = new ComputerTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, computer.getId(), computer.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", destination, "borrowed");
         computerTransactions.add(newComputerTransaction); // * Here we add a new record of successful computer transactions pero sa array muna.
         String itemNameAndDestination = String.format("%s (CL%d)", computer.getName(), destination);
-        transactionLogs.add(new TransactionLog(newComputerTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, itemNameAndDestination, newComputerTransaction.getBorrowDateTime(), null, newComputerTransaction.getIssuer(), "N/A"));
-
+        // transactionLogs.add(new TransactionLog(newComputerTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, itemNameAndDestination, newComputerTransaction.getBorrowDateTime(), null, newComputerTransaction.getIssuer(), "N/A"));
+        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), computer.getId(), itemNameAndDestination, "Success"));
         // UPDATE
         inventoryController.updateComputerDatabase(); // !!! dito ibang way ang ginamit ko sa pag update ko ng computer inventory sa database
         transactionController.updateTransactionsHeader();
@@ -525,8 +526,8 @@ public class AppController {
         LaptopTransaction newLaptopTransaction = new LaptopTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getId(), laptop.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed");
         // LaptopTransaction  newLaptopTransaction = new LaptopTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getId(), laptop.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed");
         laptopTransactions.add(newLaptopTransaction);
-        transactionLogs.add(new TransactionLog(newLaptopTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getName(), newLaptopTransaction.getBorrowDateTime(), null, newLaptopTransaction.getIssuer(), "N/A"));
-        
+        // transactionLogs.add(new TransactionLog(newLaptopTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getName(), newLaptopTransaction.getBorrowDateTime(), null, newLaptopTransaction.getIssuer(), "N/A"));
+        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), laptop.getId(), laptop.getName(), "Success"));
         // UPDATE
         inventoryController.updateLaptopDatabase();
         transactionController.updateTransactionsHeader(); 
@@ -551,7 +552,8 @@ public class AppController {
         inventoryController.borrow(equipment, borrowQuantity);
         EquipmentTransaction newEquipmentTransaction = new EquipmentTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, equipment.getId(), equipment.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed", borrowQuantity );
         equipmentTransactions.add(newEquipmentTransaction);
-        transactionLogs.add(new TransactionLog(newEquipmentTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, equipment.getName(), newEquipmentTransaction.getBorrowDateTime(), null, newEquipmentTransaction.getIssuer(), "N/A"));
+        // transactionLogs.add(new TransactionLog(newEquipmentTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, equipment.getName(), newEquipmentTransaction.getBorrowDateTime(), null, newEquipmentTransaction.getIssuer(), "N/A"));
+        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), equipment.getId(), equipment.getName(), "Success"));
         
         // UPDATE 
         inventoryController.updateEquipmentDatabase();
