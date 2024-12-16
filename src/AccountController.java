@@ -250,6 +250,8 @@ public class AccountController {
       reader.close();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
+      System.err.println("NOTE: this indicate that file is not found. Please do the following:\n\nOption 1\n1. Compile: javac -d bin src\\*.java src\\custom\\utils\\*.java\n2. Run: java -cp bin Main\n\nOption 2\nAlternatively, run the filename: compile_run.bat");
+      System.exit(1);
     }
   }
 
