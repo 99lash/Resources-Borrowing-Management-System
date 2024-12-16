@@ -127,7 +127,7 @@ public class AppController {
       s += String.format("[%s4%s] View List of Laptop Borrower\n", GREEN, RESET);
       s += String.format("[%s5%s] View List of Equipment Borrower\n", GREEN, RESET);
       s += String.format("[%s6%s] View Audit Log\n", GREEN, RESET);
-      s += String.format("[%s7%s] View Admin Operations\n", GREEN, RESET);
+      s += String.format("[%s7%s] Administrative Operations\n", GREEN, RESET);
       s += String.format("[%s8%s] %s Transactions Log\n", GREEN, RESET, switchEvent);
       s += String.format("[%s9%s] Log out\n", GREEN, RESET);
     } else {
@@ -154,10 +154,10 @@ public class AppController {
       new Title();
       String switchEvent = show ? "Hide" : "Show";
       // System.out.println("\t\t\t\t\t\t\t\t\t\tWelcome back, " + username + "!");
-      System.out.println("\t\tWelcome back, " + username + "!\n\n");
+      System.out.println("Welcome Back, " + username + "!\n\n");
       if (show) {
         logController.fetchTransactionLogsFromDatabase();
-        logController.displayAllTranscationLogs();
+        logController.displayTranscationLogs();
         logController.clearTransactionLog();
       } else {
         System.out.println("Transactions Log (Hidden)\n\n\n\n\n\n\n\n");
@@ -213,6 +213,7 @@ public class AppController {
   public void administrativeOperations() {
     while (true) {
       new Clrscr();
+      new Title();
       System.out.println("----------------------------");
       System.out.println("Administrative Panel");
       System.out.println("----------------------------\n");
@@ -230,9 +231,11 @@ public class AppController {
           break;
 
         case 2:
+          ManageStudents();
           break;
 
         case 3:
+          ManageInventory();
           break;
 
         case 4:
@@ -247,14 +250,14 @@ public class AppController {
 
   public void ManageAccounts() {
     boolean show = true;
-
     while (true) {
       String switchEvent = show ? " Hide " : " Show ";
       Boolean success = false;
       new Clrscr();
-      System.out.println("---------------------------------------");
+      new Title();
+      System.out.println("-----------------------------------------");
       System.out.println("Administrative Panel -> Manage Accounts");
-      System.out.println("---------------------------------------\n");
+      System.out.println("-----------------------------------------\n");
       if (show) {
         accountController.fetchAccountsFromDatabase();
         accountController.displayAllAccounts();
@@ -326,6 +329,83 @@ public class AppController {
     }
   }
 
+  public void ManageStudents() {
+    boolean show = true;
+    while (true) {
+      String switchEvent = show ? " Hide " : " Show ";
+      Boolean success = false;
+      new Clrscr();
+      new Title();
+      System.out.println("-----------------------------------------");
+      System.out.println("Administrative Panel -> Manage Students");
+      System.out.println("-----------------------------------------\n");
+      if (show) {
+        // accountController.fetchAccountsFromDatabase();
+        // accountController.displayAllAccounts();
+        // accountController.clearAccounts();
+        System.out.println("List of Students Detail (Visible)");
+      } else {
+        System.out.println("List of Students Detail (Hidden)");
+      }
+      System.out.println("[1] Add a student");
+      System.out.println("[2] Update a student");
+      System.out.println("[3] Search a student");
+      System.out.println("[4] Display all students");
+      System.out.println("[5] Delete a student");
+      System.out.println("[6]" + switchEvent + "list of accounts");
+      System.out.println("[7] Back to Administrative Panel");
+      System.out.print("Select: ");
+      int ch = in.nextInt();
+
+      studentController.fetchStudentsFromDatabase();
+      switch (ch) {
+        case 1:
+          success = studentController.addStudentRecord();  
+          new Getch();
+          break;
+
+        case 2:
+          success = studentController.updateStudentRecord();
+          new Getch();
+          break;
+
+        case 3:
+          success = studentController.displayStudentRecord();
+          new Getch();
+          break;
+
+        case 4:
+          new Clrscr();
+          new Title();
+          studentController.displayAllStudentsRecord();
+          new Getch();
+          break;
+
+        case 5:
+          success = studentController.deleteStudentRecord();
+          new Getch();
+          break;
+
+        case 6:
+          show = !show;
+          break;
+
+        case 7:
+          return;
+
+        default:
+          System.out.println("Invalid input! Please select between 1-5.");
+          break;
+      }
+      if (success) studentController.updateStudentsDatabase();
+      studentController.clearStudents();
+    }
+  }
+
+  public void ManageInventory() {
+
+  }
+
   public void staffDashboard(String username) {
     boolean running = true;
     boolean show = true;
@@ -335,7 +415,7 @@ public class AppController {
       String switchEvent = show ? "Hide" : "Show";
       if (show) {
         logController.fetchTransactionLogsFromDatabase();
-        logController.displayAllTranscationLogs();
+        logController.displayTranscationLogs();
         logController.clearTransactionLog();
       } else {
         System.out.println("Transactions [Log] (Hidden)\n\n\n\n\n\n\n\n");
@@ -583,7 +663,7 @@ public class AppController {
       System.out.println("[4] Cancel");
       System.out.print("Select a type of resources: ");
       int ch = in.nextInt();
-      // in.nextLine();
+      in.nextLine();
       switch (ch) {
         case 1:
           computerBorrowForm();
@@ -700,7 +780,46 @@ public class AppController {
   }
 
   private void returningForm() {
-    System.out.println("--Returning Form--");
+    boolean running = true;
+    while (running) {
+      new Clrscr();
+      new Title();
+      System.out.println("[1] PC");
+      System.out.println("[2] Laptop");
+      System.out.println("[3] Other Equipments");
+      System.out.println("[4] Cancel");
+      System.out.print("Select a type of resources: ");
+      int ch = in.nextInt();
+      in.nextLine();
+      switch (ch) {
+        case 1:
+          running = false;
+          break;
+
+        case 2:
+          running = false;
+          break;
+
+        case 3:
+          running = false;
+          break;
+
+        case 4:
+          return;
+      }
+    }
+  }
+
+  public void computerReturnForm() {
+
+  }
+
+  public void laptopReturnForm() {
+
+  }
+
+  public void equipmentReturnForm() {
+
   }
 
   public void computerBorrowersList() {

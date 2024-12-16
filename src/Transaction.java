@@ -126,7 +126,7 @@ public abstract class Transaction {
     this.issuer = issuer;
   }
 
-  public String getReciever() {
+  public String getReceiver() {
     return reciever;
   }
 

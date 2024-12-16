@@ -155,7 +155,7 @@ public class LogController {
   // System.out.println("\n\n");
   // }
 
-  public void displayAllTranscationLogs() {
+  public void displayTranscationLogs() {
     System.out.println("Transactions Log (Visible)");
     System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------");
     System.out.printf("%-20s\t%-50s\t%-10s\t%-20s\t%-40s\t%-10s\n", "Timestamp", "Borrower", "Event", "Transaction ID", "Details", "Status");
@@ -166,7 +166,7 @@ public class LogController {
     } else {
       int displayCount = 0;
       for (int i = transactionsLog.size()-1; i >= 0; i--) {
-        if (displayCount == 4) break;
+        if (displayCount == 5) break;
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
         String timestamp = transactionsLog.get(i).getTimestamp().format(formatter);
         String borrower = String.format("%-30s\t#%s", transactionsLog.get(i).getBorrowerName(), transactionsLog.get(i).getBorrowerId());

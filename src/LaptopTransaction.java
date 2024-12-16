@@ -16,7 +16,7 @@ public class LaptopTransaction extends Transaction {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy hh:mm a");
     String borrowDateTimeStr = getBorrowDateTime().format(formatter);
     String returnDateTimeStr = getReturnDateTime() != null? getReturnDateTime().format(formatter) : null;
-    return String.format("Transaction ID: %d\nBorrower ID: %s\nBorrower Name: %s\nCollateral: %s\nItem Borrowed: %s\nBorrowed Date: %s\nReturn Date: %s\nIssuer: %s\nReciever: %s\nStatus: %s\n",getTransactionId(), getStudentNo(), getStudentName(), getCollateral(), getItemName(), borrowDateTimeStr, returnDateTimeStr, getIssuer(), getReciever(), getStatus() );
+    return String.format("Transaction ID: %d\nBorrower ID: %s\nBorrower Name: %s\nCollateral: %s\nItem Borrowed: %s\nBorrowed Date: %s\nReturn Date: %s\nIssuer: %s\nReciever: %s\nStatus: %s\n",getTransactionId(), getStudentNo(), getStudentName(), getCollateral(), getItemName(), borrowDateTimeStr, returnDateTimeStr, getIssuer(), getReceiver(), getStatus() );
   }
 
   

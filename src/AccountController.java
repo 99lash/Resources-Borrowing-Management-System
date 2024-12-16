@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import custom.utils.Clrscr;
+import custom.utils.Title;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +33,7 @@ public class AccountController {
 
   public boolean createAccount() {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Creating)");
@@ -61,6 +63,7 @@ public class AccountController {
 
   public boolean updateAccount() {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Updating)");
@@ -125,6 +128,7 @@ public class AccountController {
 
   public boolean searchAccount() {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Searching)");
@@ -146,6 +150,7 @@ public class AccountController {
 
   public Boolean deleteAccount(User currentUser) {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Deleting)");
@@ -279,7 +284,6 @@ public class AccountController {
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
-        System.out.println("[UPDATE STATUS: 200]");
       } else {
         // 404R: Couldn't rename file
         System.out.println("[UPDATE STATUS: 404R]");
