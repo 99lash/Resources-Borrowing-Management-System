@@ -1,2 +1,2 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemId,itemName,borrowQuantity,borrowDateTime,returnDateTime,issuer,reciever,status
-1003,20230184-S,JOHN ASHER M. MANIT,asdasd,6,REMOTE (SKY WORTH),1,12-13-2024 10:28 PM,N/A,admin,N/A,Borrowed
+1004,20231211-S,RENZ C. GERONIMO,panty,12,TEST ITEM,2,12-18-2024 03:15 AM,12-18-2024 03:16 AM,admin,admin,Borrowed
