@@ -17,7 +17,7 @@ public class AppController {
   public static final String PURPLE = "\u001B[35m";
   public static final String CYAN = "\u001B[36m";
   public static final String WHITE = "\u001B[37m";
-  
+
   private static Scanner in = new Scanner(System.in);
   private LogController logController;
   private TransactionController transactionController;
@@ -112,11 +112,12 @@ public class AppController {
       staffDashboard(username);
     } else {
       new Clrscr();
-      System.out.println("Hello, " + username + "! Your role is invalid.\nPlease reach out to your administrator to fix your role.");
+      System.out.println(
+          "Hello, " + username + "! Your role is invalid.\nPlease reach out to your administrator to fix your role.");
       new Getch();
     }
   }
-  
+
   public String stringMenu(String switchEvent, String role) {
     String s = "";
     if (role.equalsIgnoreCase("admin")) {
@@ -145,7 +146,7 @@ public class AppController {
 
     return s;
   }
-  
+
   public void adminDashboard(String username) {
     boolean running = true;
     boolean show = true;
@@ -162,7 +163,7 @@ public class AppController {
       } else {
         System.out.println("Transactions Log (Hidden)\n\n\n\n\n\n\n\n");
       }
-      System.out.print(stringMenu(switchEvent,"admin"));
+      System.out.print(stringMenu(switchEvent, "admin"));
       System.out.print("Select: ");
       int ch = in.nextInt();
       in.nextLine();
@@ -191,7 +192,7 @@ public class AppController {
         case 6:
           System.out.println("View audit log");
           break;
-        
+
         case 7:
           administrativeOperations();
           break;
@@ -307,9 +308,10 @@ public class AppController {
             accountController.updateAccountsDatabase(accountController.getAccounts());
             accountController.clearAccounts();
             new Getch();
-            new Main().main(null); // may bug dito. flow kapag nag exit babalik sa dito sa function ManageAccount() na ito. 
+            new Main().main(null); // may bug dito. flow kapag nag exit babalik sa dito sa function ManageAccount()
+                                   // na ito.
             // return;
-          } else if (success) 
+          } else if (success)
             accountController.updateAccountsDatabase(accountController.getAccounts());
           accountController.clearAccounts();
           new Getch();
@@ -332,7 +334,6 @@ public class AppController {
   public void ManageStudents() {
     boolean show = true;
     while (true) {
-      String switchEvent = show ? " Hide " : " Show ";
       Boolean success = false;
       new Clrscr();
       new Title();
@@ -352,15 +353,14 @@ public class AppController {
       System.out.println("[3] Search a student");
       System.out.println("[4] Display all students");
       System.out.println("[5] Delete a student");
-      System.out.println("[6]" + switchEvent + "list of accounts");
-      System.out.println("[7] Back to Administrative Panel");
+      System.out.println("[6] Back to Administrative Panel");
       System.out.print("Select: ");
       int ch = in.nextInt();
 
       studentController.fetchStudentsFromDatabase();
       switch (ch) {
         case 1:
-          success = studentController.addStudentRecord();  
+          success = studentController.addStudentRecord();
           new Getch();
           break;
 
@@ -378,7 +378,6 @@ public class AppController {
           new Clrscr();
           new Title();
           studentController.displayAllStudentsRecord();
-          new Getch();
           break;
 
         case 5:
@@ -387,23 +386,127 @@ public class AppController {
           break;
 
         case 6:
-          show = !show;
-          break;
-
-        case 7:
           return;
 
         default:
           System.out.println("Invalid input! Please select between 1-5.");
           break;
       }
-      if (success) studentController.updateStudentsDatabase();
+      if (success)
+        studentController.updateStudentsDatabase();
       studentController.clearStudents();
     }
   }
 
   public void ManageInventory() {
+    while (true) {
+      Boolean success = false;
+      new Clrscr();
+      new Title();
+      System.out.println("-----------------------------------------");
+      System.out.println("Administrative Panel -> Manage Inventory");
+      System.out.println("-----------------------------------------\n");
+      System.out.println("[1] Add a computer");
+      System.out.println("[2] Add a laptop");
+      System.out.println("[3] Add an equipment");
+      System.out.println("[4] Update a computer details");
+      System.out.println("[5] Update a laptop details");
+      System.out.println("[6] Update an equipment details");
+      System.out.println("[7] Search a computer");
+      System.out.println("[8] Search a laptop");
+      System.out.println("[9] Search an equipment");
+      System.out.println("[10] Delete a computer");
+      System.out.println("[11] Delete a laptop");
+      System.out.println("[12] Delete an equipment");
+      System.out.println("[13] Display all computers");
+      System.out.println("[14] Display all laptops");
+      System.out.println("[15] Display all equipments");
+      System.out.println("[16] Back to Administrative Panel");
+      System.out.print("Select: ");
+      int ch = in.nextInt(); in.nextLine();
 
+      switch (ch) {
+        case 1:
+          success = inventoryController.addComputer();
+          if (success) inventoryController.updateComputerDatabase();
+          break;
+
+        case 2:
+          success = inventoryController.addLaptop();
+          if (success) inventoryController.updateLaptopDatabase();
+          break;
+
+        case 3:
+          success = inventoryController.addEquipment();
+          if (success) inventoryController.updateEquipmentDatabase();
+          break;
+
+          case 4:
+          success = inventoryController.updateComputerDetails();
+          if (success) inventoryController.updateComputerDatabase();
+          break;
+
+        case 5:
+          success = inventoryController.updateLaptopDetails();
+          if (success) inventoryController.updateLaptopDatabase();
+          break;
+
+        case 6:
+          success = inventoryController.updateEquipmentDetails();
+          if (success) inventoryController.updateEquipmentDatabase();
+          break;
+
+        case 7:
+          inventoryController.displayComputerDetails();
+          break;
+
+        case 8:
+          inventoryController.displayLaptopDetails();
+          break;
+        
+        case 9:
+          inventoryController.displayEquipmentDetails();
+          break;
+
+        case 10:
+          success = inventoryController.deleteComputer();
+          if (success) inventoryController.updateComputerDatabase();
+          break;
+
+        case 11:
+          success = inventoryController.deleteLaptop();
+          if (success) inventoryController.updateLaptopDatabase();
+          break;
+
+        case 12:
+          success = inventoryController.deleteEquipment();
+          if (success) inventoryController.updateEquipmentDatabase();
+          break;
+
+        case 13:
+          inventoryController.displayAllComputers();
+          break;
+        
+        case 14:
+          inventoryController.displayAllLaptops();
+          break;
+
+        case 15:
+          inventoryController.displayAllEquipments();
+          break; 
+          
+        case 16:
+          return;
+
+        default:
+          System.out.println("Invalid input! Please select between 1-16.");
+          break;
+      }
+      inventoryController.clearComputers();
+      inventoryController.clearLaptops();
+      inventoryController.clearEquipments();
+      new Getch();
+    }
   }
 
   public void staffDashboard(String username) {
@@ -466,7 +569,6 @@ public class AppController {
           break;
       }
     }
-
   }
 
   // public Boolean SubmitVerification(String studentId, String collateral,
@@ -512,18 +614,13 @@ public class AppController {
   // }
 
   public void submitVerification(String studentId, String collateral, Integer destination, Resource resource) {
-    studentController.fetchStudentsFromDatabase();
-    Map<Integer, Student> students = studentController.getStudents();
     Student borrower = null;
     char ch = ' ';
+    studentController.fetchStudentsFromDatabase();
 
     while (ch != 'Y' || ch != 'N') {
       new Clrscr();
-      for (Student student : students.values()) {
-        if (student.getStudentId().equalsIgnoreCase(studentId)) {
-          borrower = student;
-        }
-      }
+      borrower = studentController.searchStudent(studentId);
       if (borrower == null) {
         System.out.println("No record found.");
         break;
@@ -537,13 +634,14 @@ public class AppController {
       // System.out.println(resource instanceof Computer);
       if (resource instanceof Computer) {
         computer = ((Computer) resource);
-        System.out.println(String.format("Borrowed Resource: %s (CL%d)", computer.getName(), computer.getDestination()));
+        System.out
+            .println(String.format("Borrowed Resource: %s (CL%d)", computer.getName(), computer.getDestination()));
       } else if (resource instanceof Laptop) {
         laptop = ((Laptop) resource);
         System.out.println("Borrowed Resource: " + laptop.getName());
       } else if (resource instanceof Equipment) {
         equipment = ((Equipment) resource);
-        borrowQuantity = Character.getNumericValue(equipment.getName().charAt(equipment.getName().length()-1));
+        borrowQuantity = Character.getNumericValue(equipment.getName().charAt(equipment.getName().length() - 1));
         String originalEquipmentName = equipment.getName().replace(String.valueOf(borrowQuantity), "");
         equipment.setName(originalEquipmentName);
         System.out.println("Borrowed Resource: " + equipment.getName());
@@ -551,7 +649,8 @@ public class AppController {
       }
       System.out.println("Student ID: " + borrower.getStudentId());
       System.out.println("Full Name: " + borrower.getFullName());
-      System.out.println("Course/Year/Section: " + borrower.getCourse() + " - " + borrower.getYear() + borrower.getSection());
+      System.out
+          .println("Course/Year/Section: " + borrower.getCourse() + " " + borrower.getYear() + "-" + borrower.getSection());
       System.out.println("Department: " + borrower.getDepartment());
       System.out.println("Collateral: " + collateral);
       System.out.print("Submit Verification [Y/N]: ");
@@ -559,85 +658,126 @@ public class AppController {
       if (ch == 'N') {
         System.out.println("Borrow Transaction Cancelled.");
         break;
-      }  
+      }
 
       logController.fetchTransactionLogsFromDatabase();
       List<TransactionLog> transactionLogs = logController.getTransactionsLog();
       transactionController.fetchTransactionsHeader();
       List<TransactionHeader> transactionsHeader = transactionController.getTransactionsHeader();
-      TransactionHeader newTransactionHeader = new TransactionHeader(LocalDateTime.now(), borrower.getFullName("fn-mi-ln"));
+      TransactionHeader newTransactionHeader = new TransactionHeader(LocalDateTime.now(),
+          borrower.getFullName("fn-mi-ln"));
       transactionsHeader.add(newTransactionHeader);
       if (ch == 'Y' && computer != null) {
         // FETCH
-        transactionController.fetchComputerTransactionsFromDatabase(); // * Nireretrieve nito yung mga data from computer transactions database then isasalin sa array
-        
-        
+        transactionController.fetchComputerTransactionsFromDatabase(); // * Nireretrieve nito yung mga data from
+                                                                       // computer transactions database then isasalin
+                                                                       // sa array
+
         // GET LIST
-        List<ComputerTransaction> computerTransactions = transactionController.getComputerTransactions(); // * Dito isinalin na natin sa array
-        
+        List<ComputerTransaction> computerTransactions = transactionController.getComputerTransactions(); // * Dito
+                                                                                                          // isinalin na
+                                                                                                          // natin sa
+                                                                                                          // array
+
         // ADD
-        inventoryController.borrow(computer); // * borrow a computer, pinalitan lang status ng computer na napili (Available -> Not Available)
-        ComputerTransaction newComputerTransaction = new ComputerTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, computer.getId(), computer.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", destination, "borrowed");
-        computerTransactions.add(newComputerTransaction); // * Here we add a new record of successful computer transactions pero sa array muna.
+        inventoryController.borrow(computer); // * borrow a computer, pinalitan lang status ng computer na napili
+                                              // (Available -> Not Available)
+        ComputerTransaction newComputerTransaction = new ComputerTransaction(newTransactionHeader.getTransactionId(),
+            borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, computer.getId(), computer.getName(),
+            newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", destination, "borrowed");
+        computerTransactions.add(newComputerTransaction); // * Here we add a new record of successful computer
+                                                          // transactions pero sa array muna.
         String itemNameAndDestination = String.format("%s (CL%d)", computer.getName(), destination);
-        // transactionLogs.add(new TransactionLog(newComputerTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, itemNameAndDestination, newComputerTransaction.getBorrowDateTime(), null, newComputerTransaction.getIssuer(), "N/A"));
-        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), computer.getId(), itemNameAndDestination, "Success"));
+        // transactionLogs.add(new
+        // TransactionLog(newComputerTransaction.getTransactionId(),
+        // borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral,
+        // itemNameAndDestination, newComputerTransaction.getBorrowDateTime(), null,
+        // newComputerTransaction.getIssuer(), "N/A"));
+        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(),
+            borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), computer.getId(),
+            itemNameAndDestination, "Success"));
         // UPDATE
-        inventoryController.updateComputerDatabase(); // !!! dito ibang way ang ginamit ko sa pag update ko ng computer inventory sa database
+        inventoryController.updateComputerDatabase(); // !!! dito ibang way ang ginamit ko sa pag update ko ng computer
+                                                      // inventory sa database
         transactionController.updateTransactionsHeader();
-        transactionController.updateComputerTransactionsDatabase(); // * Dito i-update na natin yung database ni computer transactions, yung data na mapupunta sa databasae ay galing sa array
+        transactionController.updateComputerTransactionsDatabase(); // * Dito i-update na natin yung database ni
+                                                                    // computer transactions, yung data na mapupunta sa
+                                                                    // databasae ay galing sa array
         logController.updateTransactionLogDatabase();
-        
+
         // CLEAR
         inventoryController.clearComputers();
-        transactionController.clearComputerTransactions(); // * Clear the array kung saan natin inisstore yung mga data from database. Ito ay para sa next update natin hindi mag duplicate.
+        transactionController.clearComputerTransactions(); // * Clear the array kung saan natin inisstore yung mga data
+                                                           // from database. Ito ay para sa next update natin hindi mag
+                                                           // duplicate.
         logController.clearTransactionLog();
         transactionController.clearTransactionsHeader();
         break;
       } else if (ch == 'Y' && laptop != null) {
         // FETCH
         transactionController.fetchLaptopTransactionsFromDatabase();
-        
+
         // GET LIST
         List<LaptopTransaction> laptopTransactions = transactionController.getLaptopTransactions();
-        
+
         // ADD
         inventoryController.borrow(laptop);
-        LaptopTransaction newLaptopTransaction = new LaptopTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getId(), laptop.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed");
-        // LaptopTransaction  newLaptopTransaction = new LaptopTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getId(), laptop.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed");
+        LaptopTransaction newLaptopTransaction = new LaptopTransaction(newTransactionHeader.getTransactionId(),
+            borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getId(), laptop.getName(),
+            newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed");
+        // LaptopTransaction newLaptopTransaction = new
+        // LaptopTransaction(newTransactionHeader.getTransactionId(),
+        // borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral,
+        // laptop.getId(), laptop.getName(), newTransactionHeader.getTransDateTime(),
+        // null, currentUser.getUsername(), "N/A", "Borrowed");
         laptopTransactions.add(newLaptopTransaction);
-        // transactionLogs.add(new TransactionLog(newLaptopTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getName(), newLaptopTransaction.getBorrowDateTime(), null, newLaptopTransaction.getIssuer(), "N/A"));
-        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), laptop.getId(), laptop.getName(), "Success"));
+        // transactionLogs.add(new
+        // TransactionLog(newLaptopTransaction.getTransactionId(),
+        // borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral,
+        // laptop.getName(), newLaptopTransaction.getBorrowDateTime(), null,
+        // newLaptopTransaction.getIssuer(), "N/A"));
+        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(),
+            borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), laptop.getId(),
+            laptop.getName(), "Success"));
         // UPDATE
         inventoryController.updateLaptopDatabase();
-        transactionController.updateTransactionsHeader(); 
-        transactionController.updateLaptopTransactionsDatabase(); 
+        transactionController.updateTransactionsHeader();
+        transactionController.updateLaptopTransactionsDatabase();
         logController.updateTransactionLogDatabase();
-        
+
         // CLEAR
         inventoryController.clearLaptops();
         transactionController.clearLaptopTransactions();
         logController.clearTransactionLog();
-        transactionController.clearTransactionsHeader(); 
+        transactionController.clearTransactionsHeader();
 
         break;
       } else if (ch == 'Y' && equipment != null) {
         // FETCH
         transactionController.fetchEquipmentTransactionsFromDatabase();
-        
+
         // GET LIST
         List<EquipmentTransaction> equipmentTransactions = transactionController.getEquipmentTransactions();
-        
+
         // ADD
         inventoryController.borrow(equipment, borrowQuantity);
-        EquipmentTransaction newEquipmentTransaction = new EquipmentTransaction(newTransactionHeader.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, equipment.getId(), equipment.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed", borrowQuantity );
+        EquipmentTransaction newEquipmentTransaction = new EquipmentTransaction(newTransactionHeader.getTransactionId(),
+            borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, equipment.getId(),
+            equipment.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A",
+            "Borrowed", borrowQuantity);
         equipmentTransactions.add(newEquipmentTransaction);
-        // transactionLogs.add(new TransactionLog(newEquipmentTransaction.getTransactionId(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, equipment.getName(), newEquipmentTransaction.getBorrowDateTime(), null, newEquipmentTransaction.getIssuer(), "N/A"));
-        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), equipment.getId(), equipment.getName(), "Success"));
-        
-        // UPDATE 
+        // transactionLogs.add(new
+        // TransactionLog(newEquipmentTransaction.getTransactionId(),
+        // borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral,
+        // equipment.getName(), newEquipmentTransaction.getBorrowDateTime(), null,
+        // newEquipmentTransaction.getIssuer(), "N/A"));
+        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(),
+            borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), equipment.getId(),
+            equipment.getName(), "Success"));
+
+        // UPDATE
         inventoryController.updateEquipmentDatabase();
-        transactionController.updateTransactionsHeader(); 
+        transactionController.updateTransactionsHeader();
         transactionController.updateEquipmentTransactionsDatabase();
         logController.updateTransactionLogDatabase();
 
@@ -645,13 +785,13 @@ public class AppController {
         inventoryController.clearEquipments();
         transactionController.clearEquipmentTransactions();
         logController.clearTransactionLog();
-        transactionController.clearTransactionsHeader(); 
-        
+        transactionController.clearTransactionsHeader();
+
         break;
       }
     }
   }
-  
+
   private void borrowingForm() {
     boolean running = true;
     while (running) {
@@ -676,7 +816,7 @@ public class AppController {
           break;
 
         case 3:
-          equipmentBorrowForm();        
+          equipmentBorrowForm();
           running = false;
           break;
 
@@ -704,17 +844,19 @@ public class AppController {
     in.nextLine();
 
     Computer computerFound = inventoryController.searchComputer(selectedComputer);
-      if (computerFound != null && computerFound.getName().equalsIgnoreCase(selectedComputer) && computerFound.getStatus().equalsIgnoreCase("available")) {
-        System.out.print("Enter Student ID: ");
-        String studentId = in.nextLine();
-        System.out.print("Enter Collateral: ");
-        String collateral = in.nextLine();
-        submitVerification(studentId, collateral, destination, computerFound);
-      } else if (computerFound != null && computerFound.getName().equalsIgnoreCase(selectedComputer) && computerFound.getStatus().equalsIgnoreCase("not available")) {
-        System.out.println("PC" + selected + " isn't available at the moment.");
-      } else {
-        System.out.println("PC" + selected + " does not exist.");
-      }
+    if (computerFound != null && computerFound.getName().equalsIgnoreCase(selectedComputer)
+        && computerFound.getStatus().equalsIgnoreCase("available")) {
+      System.out.print("Enter Student ID: ");
+      String studentId = in.nextLine();
+      System.out.print("Enter Collateral: ");
+      String collateral = in.nextLine();
+      submitVerification(studentId, collateral, destination, computerFound);
+    } else if (computerFound != null && computerFound.getName().equalsIgnoreCase(selectedComputer)
+        && computerFound.getStatus().equalsIgnoreCase("not available")) {
+      System.out.println("PC" + selected + " isn't available at the moment.");
+    } else {
+      System.out.println("PC" + selected + " does not exist.");
+    }
     new Getch();
     computers.clear();
   }
@@ -753,7 +895,7 @@ public class AppController {
     List<Equipment> equipments = inventoryController.getEquipments();
     System.out.print("Select an Equipment by ID: ");
     int selected = in.nextInt();
-    
+
     Equipment equipmentFound = inventoryController.searchEquipment(selected);
     if (equipmentFound != null && equipmentFound.getStatus().equalsIgnoreCase("available")) {
 
@@ -765,7 +907,7 @@ public class AppController {
       in.nextLine();
       String tempEquipmentName = equipmentFound.getName() + quantity;
       equipmentFound.setName(tempEquipmentName);
-      System.out.print("Enter Student ID: ");      
+      System.out.print("Enter Student ID: ");
       String studentId = in.nextLine();
       System.out.print("Enter Collateral: ");
       String collateral = in.nextLine();
@@ -828,8 +970,7 @@ public class AppController {
     transactionController.fetchComputerTransactionsFromDatabase();
     transactionController.displayComputerTransactionsList();
     transactionController.clearComputerTransactions();
-    new Getch();
-  } 
+  }
 
   public void laptopBorrowersList() {
     new Clrscr();

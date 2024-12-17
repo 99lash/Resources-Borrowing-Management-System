@@ -119,7 +119,7 @@ public class AccountController {
 
         default:
           System.out.println("Invalid input! Please select between 1-4.");
-          break;
+          return false;
       }
     }
     System.out.println("Account does not exist.");
@@ -173,6 +173,7 @@ public class AccountController {
         System.out.println("ERROR: You can't delete super admin account.");
         return false;
       }
+      System.out.println("---------------------------------------------------");
       System.out.println("Review account details to be deleted");
       System.out.println("---------------------------------------------------");
       System.out.println(user.getAccountInfo());

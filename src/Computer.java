@@ -8,6 +8,17 @@ public class Computer extends Resource {
     setStatus(status);
   }
 
+  public Computer (int id, String name, int destination) {
+    super(id, name, "Computer");
+    setDestination(destination);
+    setStatus("Available");
+  }
+
+  @Override
+  public String getDetails() {
+    return String.format("Item Id: %d\nName: %s\nType: %s\nStatus: %s", super.getId(), super.getName(), super.getType(), status);
+  }
+
   // GETTERS
   public int getDestination() {
     return destination;

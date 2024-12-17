@@ -196,7 +196,7 @@ public class StudentController {
     return true;
   }
 
-  private Student searchStudent(String studentNo) {
+  public Student searchStudent(String studentNo) {
     studentNo = studentNo.contains("-S") || studentNo.contains("-s") ? studentNo.toUpperCase() : studentNo + "-S";
     for (Student student : students.values()) {
       if (student.getStudentId().equalsIgnoreCase(studentNo)) {
@@ -259,19 +259,20 @@ public class StudentController {
 
   public void displayAllStudentsRecord() {
     Scanner in = new Scanner(System.in);
-    final int displayCountPerPage = 20;
+    final int displayCountPerPage = 10;
     int totalRecords = students.size();
     int totalPages = (int) Math.ceil((double) totalRecords / displayCountPerPage);
     int currentPage = 1;
 
-    // Convert the HashMap to a List for indexed access
     List<Map.Entry<Integer, Student>> studentEntries = new ArrayList<>(students.entrySet());
 
     while (true) {
-      new Clrscr(); // Clear screen (your implementation)
-      new Title(); // Display title (your implementation)
+      new Clrscr();
+      new Title();
+      int start = (currentPage - 1) * displayCountPerPage;
+      int end = Math.min(start + displayCountPerPage, totalRecords);
 
-      System.out.println("Student Masterlist");
+      System.out.printf("Student Masterlist\t\t\t\t\t\tShowing %d - %d entries  Page %d of %d\n", start+1, end, currentPage, totalPages);
       System.out.println(
           "-----------------------------------------------------------------------------------------------------------");
       System.out.printf("| %-20s | %-40s | %-20s | %-15s|\n", "Student Number", "Full Name", "Course Year-Section",
@@ -279,11 +280,7 @@ public class StudentController {
       System.out.println(
           "-----------------------------------------------------------------------------------------------------------");
 
-      // Calculate the range for the current page
-      int start = (currentPage - 1) * displayCountPerPage;
-      int end = Math.min(start + displayCountPerPage, totalRecords);
 
-      // Display records for the current page
       for (int i = start; i < end; i++) {
         Map.Entry<Integer, Student> entry = studentEntries.get(i);
         Student student = entry.getValue();
@@ -299,9 +296,6 @@ public class StudentController {
             "-----------------------------------------------------------------------------------------------------------");
       }
 
-      // Display page navigation info
-      System.out.printf("\t\t\t\t\t\t\t\t\t\t\t\tPage %d of %d\n", currentPage, totalPages);
-
       if (currentPage == 1) {
         System.out.println("[N] Next Page | [Q] Quit");
       } else if (currentPage == totalPages) {
@@ -310,18 +304,17 @@ public class StudentController {
         System.out.println("[N] Next Page | [P] Previous Page | [Q] Quit");
       }
 
-      // Handle user input for navigation
-      String choice = in.nextLine().trim().toUpperCase();
+      String ch = in.nextLine().trim().toUpperCase();
 
-      if (choice.equals("N")) {
+      if (ch.equals("N")) {
         if (currentPage < totalPages) {
           currentPage++;
         }
-      } else if (choice.equals("P")) {
+      } else if (ch.equals("P")) {
         if (currentPage > 1) {
           currentPage--;
         }
-      } else if (choice.equals("Q")) {
+      } else if (ch.equals("Q")) {
         break;
       }
     }
