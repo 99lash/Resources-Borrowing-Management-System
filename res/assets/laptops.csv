@@ -1,4 +1,4 @@
-itemId,itemName,type,status1
+itemId,itemName,type,status
 1,LAPTOP1,Laptop,Available
 2,LAPTOP2,Laptop,Available
 3,LAPTOP3,Laptop,Available
@@ -29,3 +29,4 @@ itemId,itemName,type,status1
 28,LAPTOP28,Laptop,Available
 29,LAPTOP29,Laptop,Available
 30,LAPTOP30,Laptop,Available
+31,LAPTOP31,Laptop,Available

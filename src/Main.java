@@ -1,4 +1,3 @@
-import java.io.File;
 import java.util.Scanner;
 
 import custom.utils.Clrscr;
@@ -17,17 +16,16 @@ public class Main {
       System.out.println("[1] Sign in");
       System.out.println("[2] Exit");
       System.out.print("Select: ");
-      int choice = in.nextInt();
-      in.nextLine();
+      int choice = in.nextInt(); in.nextLine();
+
       if (choice == 1) {
         while (true) {
           new Clrscr();
           new Title();
           System.out.print("username: ");
           String username = in.nextLine();
-          System.out.print("password: ");
-          String password = in.nextLine();
-
+          char[] password = System.console().readPassword("password: ");
+          // in.nextLine();
           User account = app.authenticate(username, password);
 
           if (account != null) {
@@ -37,6 +35,7 @@ public class Main {
           } else {
             System.out.println("Invalid credentials!");
             new Getch();
+            break;
           }
         }
       } else if (choice == 2) {
@@ -48,9 +47,36 @@ public class Main {
   }
 }
 
-/* 
- * TODO:
- * fix the transaction id duplication
- * fix the layout of borrowing in pc, laptop, equipment
+/*
+ * 
+ * 
+ * 
+ * 
+ * 
+ * TODO LIST: [6/11]
+ * PROJECT PROGRESS: 7/11 = 63%
+ * 
+ * !! Major Features (Needed ASAP) [6/8]
+ * ✅ Borrow an Item
+ * 🖕 Return an Item
+ * ✅ Borrower Log
+ * ✅ Borrower List
+ * 🖕 Audit Log
+ * ✅ Manage Student Master list
+ * ✅ Manage Inventory
+ * ✅ Manage Account
+ * 
+ * !! Nothing major but needed [1/3]
+ * ✅ change the role of default admin to super admin
+ * 🖕 Hide password input
+ * 🟠 Try catch for input (para hindi mag exit and program)
+ * 
+ * 
+ * LEGEND:
+ * 🖕TODO
+ * 🟠IN PROGRESS
+ * ✅DONE
+ * 
+ * 
  * 
  */

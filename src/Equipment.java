@@ -4,18 +4,30 @@ public class Equipment extends Resource{
   private String status;
 
   Equipment(int id, String name, String type, int quantity, int availableQuantity, String status) {
-    super(id, name, type, quantity);
-    this.quantity = quantity;
+    super(id, name, type);
+    setQuantity(quantity);
     this.availableQuantity = availableQuantity;
     this.status = status;
   }
 
   Equipment(int id, String name, String type, int quantity) {
-    super(id, name, type, quantity);
-    this.availableQuantity = quantity;
+    super(id, name, type);
+    setQuantity(quantity);
+    setAvailableQuantity(quantity);
     this.status = availableQuantity > 0 ? "Available" : "Not Available"; 
   }
 
+  Equipment(int id, String name, int initialQuantity) {
+    super(id, name, "Equipment");
+    setQuantity(initialQuantity);
+    setAvailableQuantity(initialQuantity);
+    setStatus("Available");
+  }
+
+  @Override
+  public String getDetails() {
+    return String.format("Item Id: %d\nName: %s\nType: %s\nQuantity: %d\nAvailable Quantity: %d\nStatus: %s", super.getId(), super.getName(), super.getType(), quantity, availableQuantity, status);
+  }
   // GETTERS and SETTERS tabunan niyo 'to pls
   public int getQuantity() {
     return quantity;

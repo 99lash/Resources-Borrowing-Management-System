@@ -25,6 +25,6 @@ Timestamp          User            Event               Entity                 De
 **TRANSACTION LOG**
 Timestamp          Person                               Event              Transaction ID          Details                   Status
 -------------------------------------------------------------------------------------------------------------------------------------------------------
-2024-12-10 14:35   LANCE ALCALDE    #20230183-s         BORROW             TXN-0012345678          borrowed Laptop1 #1       Success
-2024-12-10 15:00   JOHN ASHER MANIT #20230184-S         RETURN             TXN-0012345679          Returned PC2-CL1 #2       Success
-2024-12-10 15:15   JOSHUA COLMO     #123123-S           BORROW             TXN-0012345680          Borrowed PC1-Cl1 #1       Failed
+2024-12-10 14:35   LANCE ALCALDE    #20230183-s         BORROW             #0012345678          Borrowed Laptop1 #1       Success
+2024-12-10 15:00   JOHN ASHER MANIT #20230184-S         RETURN             #0012345679          Returned PC2-CL1 #2       Success
+2024-12-10 15:15   JOSHUA COLMO     #123123-S           BORROW             #0012345680          Borrowed PC1-Cl1 #1       Failed

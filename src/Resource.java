@@ -9,12 +9,6 @@ public abstract class Resource {
     this.type = type;
   }
 
-  protected Resource(int id, String name, String type, int quantity) {
-    this.id = id;
-    this.name = name;
-    this.type = type;
-  }
-
   // GETTERS
   public int getId() {
     return id;
@@ -29,7 +23,7 @@ public abstract class Resource {
   }
 
   public String getDetails() {
-    return String.format("ID: %d\nName: %s\nType: %s", id, name, type);
+    return String.format("Item Id: %d\nName: %s\nType: %s", id, name, type);
   }
 
   // SETTERS

@@ -1,1 +1,2 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemId,itemName,borrowDateTime,returnDateTime,issuer,reciever,status
+1003,20230116-S,MAXIMO JARED S. CASTRO,student id,31,LAPTOP31,12-18-2024 03:05 AM,12-18-2024 03:10 AM,colmo,colmo,Returned

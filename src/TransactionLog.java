@@ -1,49 +1,41 @@
 import java.time.LocalDateTime;
 
 public class TransactionLog {
+  private LocalDateTime timestamp;
+  private String borrowerId;
+  private String borrowerName;
+  private String event;
   private int transactionId;
-  private String studentNo;
-  private String studentName;
-  private String collateral;
+  private int itemId;
   private String itemName;
-  private LocalDateTime borrowDateTime;
-  private LocalDateTime returnDateTime;
-  private String issuer;
-  private String reciever;
-  private String status;
+  private String status; // success / failed
 
-  public TransactionLog(int transactionId, String studentNo, String studentName, String collateral, String itemName, LocalDateTime borrowDateTime, LocalDateTime returnDateTime, String issuer, String reciever, String status) {
+  public TransactionLog(LocalDateTime timestamp, String borrowerId, String borrowerName, String event,int transactionId, int itemId, String itemName, String status) {
+    this.timestamp = timestamp;
+    this.borrowerId = borrowerId;
+    this.borrowerName = borrowerName;
+    this.event = event;
     this.transactionId = transactionId;
-    this.studentNo = studentNo;
-    this.studentName = studentName;
-    this.collateral = collateral;
+    this.itemId = itemId;
     this.itemName = itemName;
-    this.borrowDateTime = borrowDateTime;
-    this.returnDateTime = returnDateTime;
-    this.issuer = issuer;
-    this.reciever = reciever;
     this.status = status;
   }
-  
-  public TransactionLog(int transactionId, String studentNo, String studentName, String collateral, String itemName, LocalDateTime borrowDateTime, LocalDateTime returnDateTime, String issuer, String reciever) {
-    this.transactionId = transactionId;
-    this.studentNo = studentNo;
-    this.studentName = studentName;
-    this.collateral = collateral;
-    if (itemName.equalsIgnoreCase("PC")) {
-      this.itemName = String.format("%s (CL%c)", itemName, itemName.charAt(itemName.length()-1));
-    } else {
-      this.itemName = itemName;
-    }
-    this.borrowDateTime = borrowDateTime;
-    this.returnDateTime = returnDateTime;
-    this.issuer = issuer;
-    this.reciever = reciever;
-    this.status = returnDateTime != null ? "returned" : "borrowed";
+
+
+  public void getTransactionLogDetails() {
+    System.out.printf("Timestamp: %s\tBorrowerId: %s\tBorrowerName: %s\tEvent: %s\tTransactionId: %d\tItemId: %d\tItemName: %s\tStatus: %s\t",timestamp, borrowerId, borrowerName, event, transactionId, itemId, itemName, status);
   }
 
 
   // GETTERS AND SETTERS (laging niyo tabunan 'to ng mga important methods, mahaba kasi)
+  public LocalDateTime getTimestamp() {
+    return timestamp;
+  }
+
+  public void setTimestamp(LocalDateTime timestamp) {
+    this.timestamp = timestamp;
+  }
+
   public int getTransactionId() {
     return transactionId;
   }
@@ -52,28 +44,28 @@ public class TransactionLog {
     this.transactionId = transactionId;
   }
 
-  public String getStudentNo() {
-    return studentNo;
+  public String getBorrowerId() {
+    return borrowerId;
   }
 
-  public void setStudentNo(String studentNo) {
-    this.studentNo = studentNo;
+  public void setBorrowerId(String borrowerId) {
+    this.borrowerId = borrowerId;
   }
 
-  public String getStudentName() {
-    return studentName;
+  public String getBorrowerName() {
+    return borrowerName;
   }
 
-  public void setStudentName(String studentName) {
-    this.studentName = studentName;
+  public void setBorrowerName(String borrower) {
+    this.borrowerName = borrower;
   }
 
-  public String getCollateral() {
-    return collateral;
+  public int getItemId() {
+    return itemId;
   }
 
-  public void setCollateral(String collateral) {
-    this.collateral = collateral;
+  public void setItemId(int itemId) {
+    this.itemId = itemId;
   }
 
   public String getItemName() {
@@ -84,38 +76,6 @@ public class TransactionLog {
     this.itemName = itemName;
   }
 
-  public LocalDateTime getBorrowDateTime() {
-    return borrowDateTime;
-  }
-
-  public void setBorrowDateTime(LocalDateTime borrowDate) {
-    this.borrowDateTime = borrowDate;
-  }
-
-  public LocalDateTime getReturnDateTime() {
-    return returnDateTime;
-  }
-
-  public void setReturnDateTime(LocalDateTime returnDate) {
-    this.returnDateTime = returnDate;
-  }
-
-  public String getIssuer() {
-    return issuer;
-  }
-
-  public void setIssuer(String issuer) {
-    this.issuer = issuer;
-  }
-
-  public String getReciever() {
-    return reciever;
-  }
-
-  public void setReciever(String reciever) {
-    this.reciever = reciever;
-  }
-
   public String getStatus() {
     return status;
   }
@@ -124,7 +84,11 @@ public class TransactionLog {
     this.status = status;
   }
 
-  
-  
+  public String getEvent() {
+    return event;
+  }
 
+  public void setEvent(String event) {
+    this.event = event;
+  }
 }

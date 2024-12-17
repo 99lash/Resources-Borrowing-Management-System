@@ -36,6 +36,10 @@ public class Student {
     return middleInitial;
   }
 
+  public void setMiddleInitial(String middleInitial) {
+    this.middleInitial = middleInitial;
+  }
+
   public String getFullName(String format) {
     if (format.equals("fn-mi-ln")) return String.format("%s %s %s", firstName, middleInitial, lastName);
     return String.format("%s, %s %s", lastName, firstName, middleInitial);
@@ -62,7 +66,7 @@ public class Student {
   }
 
   public String getStudentInfo() {
-    return String.format("Student ID: %s\nFull Name: %s, %s\nCourse/Year/Section: %s %d-%c", studentId, lastName, firstName, course, year, section);
+    return String.format("Student ID: %s\nFull Name: %s\nCourse/Year/Section: %s %d-%c\nDepartment: %s", studentId, getFullName(), course, year, section, department);
   }
 
   // SETTERS

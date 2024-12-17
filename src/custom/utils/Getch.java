@@ -9,7 +9,7 @@ public class Getch {
       // Read a single byte (character)
       System.out.print("\nPress Enter key to continue.");
       System.in.read();
-      in.nextLine();
+      // in.nextLine();
     } catch (IOException e) {
       System.out.println("Unable to getch.");
     }

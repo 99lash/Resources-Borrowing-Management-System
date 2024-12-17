@@ -3,6 +3,7 @@ import java.util.List;
 import java.util.Scanner;
 
 import custom.utils.Clrscr;
+import custom.utils.Title;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -32,6 +33,7 @@ public class AccountController {
 
   public boolean createAccount() {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Creating)");
@@ -39,7 +41,7 @@ public class AccountController {
 
     System.out.print("Enter username: ");
     String username = in.nextLine();
-    System.out.print("Enter password: ");
+    System.out.printf("Enter password: ");
     String password = in.nextLine();
     String role = "";
     boolean roleValid = role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("staff");
@@ -61,6 +63,7 @@ public class AccountController {
 
   public boolean updateAccount() {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Updating)");
@@ -104,7 +107,7 @@ public class AccountController {
         case 3:
           System.out.print("Enter new role: ");
           String newRole = in.nextLine();
-          if (account.getRole().equals(newRole)) {
+          if (!account.getRole().equals(newRole)) {
             account.setRole(newRole);
             return true;
           }
@@ -116,7 +119,7 @@ public class AccountController {
 
         default:
           System.out.println("Invalid input! Please select between 1-4.");
-          break;
+          return false;
       }
     }
     System.out.println("Account does not exist.");
@@ -125,6 +128,7 @@ public class AccountController {
 
   public boolean searchAccount() {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Searching)");
@@ -146,6 +150,7 @@ public class AccountController {
 
   public Boolean deleteAccount(User currentUser) {
     new Clrscr();
+    new Title();
     Scanner in = new Scanner(System.in);
     System.out.println("---------------------------------------------------");
     System.out.println("Administrative Panel -> Manage Account (Deleting)");
@@ -168,6 +173,7 @@ public class AccountController {
         System.out.println("ERROR: You can't delete super admin account.");
         return false;
       }
+      System.out.println("---------------------------------------------------");
       System.out.println("Review account details to be deleted");
       System.out.println("---------------------------------------------------");
       System.out.println(user.getAccountInfo());
@@ -245,6 +251,8 @@ public class AccountController {
       reader.close();
     } catch (FileNotFoundException e) {
       e.printStackTrace();
+      System.err.println("NOTE: this indicate that file is not found. Please do the following:\n\nOption 1\n1. Compile: javac -d bin src\\*.java src\\custom\\utils\\*.java\n2. Run: java -cp bin Main\n\nOption 2\nAlternatively, run the filename: compile_run.bat");
+      System.exit(1);
     }
   }
 
@@ -279,7 +287,6 @@ public class AccountController {
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
-        System.out.println("[UPDATE STATUS: 200]");
       } else {
         // 404R: Couldn't rename file
         System.out.println("[UPDATE STATUS: 404R]");

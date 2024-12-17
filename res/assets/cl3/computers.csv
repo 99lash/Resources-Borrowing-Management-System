@@ -1,9 +1,9 @@
 itemId,itemName,type,status,destination
-36,PC1,Computer,Available,3
-27,PC2,Computer,available,3
-38,PC3,Computer,available,3
-39,PC4,Computer,available,3
-40,PC5,Computer,Available,3
-41,PC6,Computer,available,3
-42,PC7,Computer,available,3
-43,PC8,Computer,available,3
+301,PC1,Computer,Available,3
+302,PC2,Computer,available,3
+303,PC3,Computer,available,3
+304,PC4,Computer,available,3
+305,PC5,Computer,Available,3
+306,PC6,Computer,available,3
+307,PC7,Computer,available,3
+308,PC8,Computer,available,3
