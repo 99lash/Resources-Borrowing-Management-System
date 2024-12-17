@@ -95,14 +95,13 @@ public class LogController {
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
-        System.out.println("[UPDATE STATUS: 200]");
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[UPDATE STATUS: 404R]");
+        System.out.println("[TRANSAC LOG STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[UPDATE STATUS: 404D]");
+      System.out.println("[TRANSAC LOG STATUS: 404D]");
     }
   }
 

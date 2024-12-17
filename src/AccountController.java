@@ -41,7 +41,7 @@ public class AccountController {
 
     System.out.print("Enter username: ");
     String username = in.nextLine();
-    System.out.print("Enter password: ");
+    System.out.printf("Enter password: ");
     String password = in.nextLine();
     String role = "";
     boolean roleValid = role.equalsIgnoreCase("admin") || role.equalsIgnoreCase("staff");

@@ -219,15 +219,15 @@ public class InventoryController {
     return true;
   }
 
-  public void borrow(Computer computer) {
+  public void borrowItem(Computer computer) {
     computer.setStatus("Not Available");
   }
 
-  public void borrow(Laptop laptop) {
+  public void borrowItem(Laptop laptop) {
     laptop.setStatus("Not Available");
   }
 
-  public void borrow(Equipment equipment, int borrowQuantity) {
+  public void borrowItem(Equipment equipment, int borrowQuantity) {
     int availableQty = equipment.getAvailableQuantity();
     if (availableQty == 0) {
       System.out.println(equipment.getName() + " isn't available.");
@@ -239,6 +239,26 @@ public class InventoryController {
       if (newQuantity == 0) {
         equipment.setStatus("Not Available");
       }
+    }
+  }
+
+  public void returnItem(Computer computer) {
+    computer.setStatus("Available");
+  }
+
+  public void returnItem(Laptop laptop) {
+    laptop.setStatus("Available");
+  }
+
+  public void returnItem(Equipment equipment, int returnQuantity) {
+    int currentAvailableQuantity = equipment.getAvailableQuantity();
+    if ((returnQuantity + currentAvailableQuantity ) > equipment.getQuantity()) {
+      System.out.println("Cannot return greater than the initial quantity.");
+      return;
+    }
+    equipment.setAvailableQuantity(currentAvailableQuantity + returnQuantity);
+    if (equipment.getAvailableQuantity() > 0) {
+      equipment.setStatus("Available");
     }
   }
 
@@ -697,6 +717,24 @@ public class InventoryController {
     return null;
   }
 
+  public Computer searchComputer(int itemId) {
+    for (Computer computer : computers) {
+      if (computer.getId() == itemId) {
+        return computer;
+      }
+    }
+    return null;
+  }
+  
+  public Laptop searchLaptop(int itemId) {
+    for (Laptop laptop : laptops) {
+      if (laptop.getId() == itemId) {
+        return laptop;
+      }
+    }
+    return null;
+  }
+
   public Laptop searchLaptop(String itemName) {
     for (Laptop laptop : laptops) {
       if (laptop.getName().equalsIgnoreCase(itemName)) {
@@ -838,11 +876,11 @@ public class InventoryController {
         // 200: CSV file updated successfully
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[COMPUTER UPDATE STATUS: 404R]");
+        System.out.println("[COMPUTER INVENTORY UPDATE STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[COMPUTER UPDATE STATUS: 404D]");
+      System.out.println("[COMPUTER INVENTORY UPDATE STATUS: 404D]");
     }
   }
 
@@ -880,11 +918,11 @@ public class InventoryController {
         // 200: CSV file updated successfully
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[LAPTOP UPDATE STATUS: 404R]");
+        System.out.println("[LAPTOP INVENTORY UPDATE STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[LAPTOP UPDATE STATUS: 404D]");
+      System.out.println("[LAPTOP INVENTORY UPDATE STATUS: 404D]");
     }
   }
 
@@ -924,11 +962,11 @@ public class InventoryController {
         // 200: CSV file updated successfully
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[EQUIPMENT UPDATE STATUS: 404R]");
+        System.out.println("[EQUIPMENT INVENTORY UPDATE STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[EQUIPMENT UPDATE STATUS: 404D]");
+      System.out.println("[EQUIPMENT INVENTORY UPDATE STATUS: 404D]");
     }
   }
 

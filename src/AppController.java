@@ -1,7 +1,7 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Scanner;
 
 import custom.utils.Clrscr;
@@ -88,7 +88,11 @@ public class AppController {
     return new ArrayList<>();
   }
 
-  public User authenticate(String username, String password) {
+  public User authenticate(String username, char[] charPassword) {
+    String password = "";
+    for (char c : charPassword) {
+      password += c;
+    }
     accountController.fetchAccountsFromDatabase();
     List<User> accounts = accountController.getAccounts();
     for (User account : accounts) {
@@ -308,7 +312,7 @@ public class AppController {
             accountController.updateAccountsDatabase(accountController.getAccounts());
             accountController.clearAccounts();
             new Getch();
-            new Main().main(null); // may bug dito. flow kapag nag exit babalik sa dito sa function ManageAccount()
+            new Main().main(null); // may bug dito. kapag nadelete mo currentuser tas nag [2] exit. Babalik ka dito sa function ManageAccount()
                                    // na ito.
             // return;
           } else if (success)
@@ -497,10 +501,6 @@ public class AppController {
           
         case 16:
           return;
-
-        default:
-          System.out.println("Invalid input! Please select between 1-16.");
-          break;
       }
       inventoryController.clearComputers();
       inventoryController.clearLaptops();
@@ -554,7 +554,7 @@ public class AppController {
           break;
 
         case 7:
-          System.out.println("View inventory");
+          viewInventory();
           break;
 
         case 8:
@@ -613,60 +613,68 @@ public class AppController {
   // return null;
   // }
 
-  public void submitVerification(String studentId, String collateral, Integer destination, Resource resource) {
+  private void borrowingSubmitConfirmation(String studentId, String collateral, Integer destination, Resource resource) {
     Student borrower = null;
     char ch = ' ';
     studentController.fetchStudentsFromDatabase();
 
     while (ch != 'Y' || ch != 'N') {
       new Clrscr();
+      new Title();
       borrower = studentController.searchStudent(studentId);
       if (borrower == null) {
         System.out.println("No record found.");
         break;
       }
+      
       Computer computer = null;
       Laptop laptop = null;
       Equipment equipment = null;
       int borrowQuantity = 0;
-      System.out.println("Review Details");
-      System.out.println("-------------------------------");
-      // System.out.println(resource instanceof Computer);
+      transactionController.fetchTransactionsHeader();
+      List<TransactionHeader> transactionsHeader = transactionController.getTransactionsHeader();
+      TransactionHeader newTransactionHeader = new TransactionHeader(LocalDateTime.now(),borrower.getFullName("fn-mi-ln"), resource.getClass().getSimpleName());
+      transactionsHeader.add(newTransactionHeader);
+      String reviewDetailsStr = String.format("Transaction ID: %d\nBorrowed Date & Time: %s", newTransactionHeader.getTransactionId(), newTransactionHeader.getTransDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")));
+      String borrowerDetailsStr = "";
+      String itemName = "";
+
+      logController.fetchTransactionLogsFromDatabase();
+      List<TransactionLog> transactionLogs = logController.getTransactionsLog();      
+      // reviewDetailsStr = reviewDetailsStr.concat(String.format("Transaction ID: %d\nBorrowed Date & Time: %s", newTransactionHeader.getTransactionId(), newTransactionHeader.getTransDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a"))));
       if (resource instanceof Computer) {
         computer = ((Computer) resource);
-        System.out
-            .println(String.format("Borrowed Resource: %s (CL%d)", computer.getName(), computer.getDestination()));
+        itemName = String.format("%s (CL%d)", computer.getName(), destination);
+        reviewDetailsStr =  reviewDetailsStr.concat(String.format("\nBorrowed Resource: %s (CL%d)", computer.getName(), computer.getDestination()));
       } else if (resource instanceof Laptop) {
         laptop = ((Laptop) resource);
-        System.out.println("Borrowed Resource: " + laptop.getName());
+        itemName = laptop.getName();
+        reviewDetailsStr = reviewDetailsStr.concat(String.format("\nBorrowed Resource: %s", laptop.getName()));
       } else if (resource instanceof Equipment) {
         equipment = ((Equipment) resource);
+        itemName = equipment.getName();
         borrowQuantity = Character.getNumericValue(equipment.getName().charAt(equipment.getName().length() - 1));
         String originalEquipmentName = equipment.getName().replace(String.valueOf(borrowQuantity), "");
         equipment.setName(originalEquipmentName);
-        System.out.println("Borrowed Resource: " + equipment.getName());
-        System.out.println("Borrowed Quantity: " + borrowQuantity);
+        reviewDetailsStr = reviewDetailsStr.concat(String.format("\nBorrowed Resource: %s\nBorrowed Quantity: %d", equipment.getName(), borrowQuantity, currentUser.getUsername()));
       }
-      System.out.println("Student ID: " + borrower.getStudentId());
-      System.out.println("Full Name: " + borrower.getFullName());
-      System.out
-          .println("Course/Year/Section: " + borrower.getCourse() + " " + borrower.getYear() + "-" + borrower.getSection());
-      System.out.println("Department: " + borrower.getDepartment());
-      System.out.println("Collateral: " + collateral);
+      reviewDetailsStr = reviewDetailsStr.concat(String.format("\nIssuer: %s\n", currentUser.getUsername()));
+      System.out.println("-----------------------------------------\n--- Review Details ---\n-----------------------------------------\n");
+      System.out.println(reviewDetailsStr);
+      System.out.println("-----------------------------------------\n--- Borrower Details ---\n-----------------------------------------\n");
+      borrowerDetailsStr = borrowerDetailsStr.concat(String.format("Student ID: %s\nFull Name: %s\nCourse Year & Section: %s %d %c\nCollateral: %s\nDepartment: %s\n", borrower.getStudentId(), borrower.getFullName(), borrower.getCourse(), borrower.getYear(), borrower.getSection(), collateral , borrower.getDepartment()));
+      System.out.println(borrowerDetailsStr);
       System.out.print("Submit Verification [Y/N]: ");
       ch = in.nextLine().toUpperCase().charAt(0);
       if (ch == 'N') {
         System.out.println("Borrow Transaction Cancelled.");
+        transactionController.clearTransactionsHeader();
+        transactionsHeader.clear();
+        transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(),borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), resource.getId(), itemName, "Canceled"));
+        logController.updateTransactionLogDatabase();
         break;
       }
 
-      logController.fetchTransactionLogsFromDatabase();
-      List<TransactionLog> transactionLogs = logController.getTransactionsLog();
-      transactionController.fetchTransactionsHeader();
-      List<TransactionHeader> transactionsHeader = transactionController.getTransactionsHeader();
-      TransactionHeader newTransactionHeader = new TransactionHeader(LocalDateTime.now(),
-          borrower.getFullName("fn-mi-ln"));
-      transactionsHeader.add(newTransactionHeader);
       if (ch == 'Y' && computer != null) {
         // FETCH
         transactionController.fetchComputerTransactionsFromDatabase(); // * Nireretrieve nito yung mga data from
@@ -680,14 +688,11 @@ public class AppController {
                                                                                                           // array
 
         // ADD
-        inventoryController.borrow(computer); // * borrow a computer, pinalitan lang status ng computer na napili
+        inventoryController.borrowItem(computer); // * borrow a computer, pinalitan lang status ng computer na napili
                                               // (Available -> Not Available)
-        ComputerTransaction newComputerTransaction = new ComputerTransaction(newTransactionHeader.getTransactionId(),
-            borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, computer.getId(), computer.getName(),
-            newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", destination, "borrowed");
+        ComputerTransaction newComputerTransaction = new ComputerTransaction(newTransactionHeader.getTransactionId(),borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, computer.getId(), computer.getName(),newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", destination, "borrowed");
         computerTransactions.add(newComputerTransaction); // * Here we add a new record of successful computer
                                                           // transactions pero sa array muna.
-        String itemNameAndDestination = String.format("%s (CL%d)", computer.getName(), destination);
         // transactionLogs.add(new
         // TransactionLog(newComputerTransaction.getTransactionId(),
         // borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral,
@@ -695,7 +700,7 @@ public class AppController {
         // newComputerTransaction.getIssuer(), "N/A"));
         transactionLogs.add(new TransactionLog(newTransactionHeader.getTransDateTime(), borrower.getStudentId(),
             borrower.getFullName("fn-mi-ln"), "Borrowed", newTransactionHeader.getTransactionId(), computer.getId(),
-            itemNameAndDestination, "Success"));
+            itemName, "Success"));
         // UPDATE
         inventoryController.updateComputerDatabase(); // !!! dito ibang way ang ginamit ko sa pag update ko ng computer
                                                       // inventory sa database
@@ -721,7 +726,7 @@ public class AppController {
         List<LaptopTransaction> laptopTransactions = transactionController.getLaptopTransactions();
 
         // ADD
-        inventoryController.borrow(laptop);
+        inventoryController.borrowItem(laptop);
         LaptopTransaction newLaptopTransaction = new LaptopTransaction(newTransactionHeader.getTransactionId(),
             borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, laptop.getId(), laptop.getName(),
             newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A", "Borrowed");
@@ -760,7 +765,7 @@ public class AppController {
         List<EquipmentTransaction> equipmentTransactions = transactionController.getEquipmentTransactions();
 
         // ADD
-        inventoryController.borrow(equipment, borrowQuantity);
+        inventoryController.borrowItem(equipment, borrowQuantity);
         EquipmentTransaction newEquipmentTransaction = new EquipmentTransaction(newTransactionHeader.getTransactionId(),
             borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), collateral, equipment.getId(),
             equipment.getName(), newTransactionHeader.getTransDateTime(), null, currentUser.getUsername(), "N/A",
@@ -797,6 +802,7 @@ public class AppController {
     while (running) {
       new Clrscr();
       new Title();
+      System.out.println("=== Borrowing ===");
       System.out.println("[1] PC");
       System.out.println("[2] Laptop");
       System.out.println("[3] Other Equipments");
@@ -826,7 +832,7 @@ public class AppController {
     }
   }
 
-  public void computerBorrowForm() {
+  private void computerBorrowForm() {
     int destination = 0;
     while (destination < 1 || destination > 3) {
       System.out.print("Select a Computer Lab (1-3): ");
@@ -850,7 +856,7 @@ public class AppController {
       String studentId = in.nextLine();
       System.out.print("Enter Collateral: ");
       String collateral = in.nextLine();
-      submitVerification(studentId, collateral, destination, computerFound);
+      borrowingSubmitConfirmation(studentId, collateral, destination, computerFound);
     } else if (computerFound != null && computerFound.getName().equalsIgnoreCase(selectedComputer)
         && computerFound.getStatus().equalsIgnoreCase("not available")) {
       System.out.println("PC" + selected + " isn't available at the moment.");
@@ -861,7 +867,7 @@ public class AppController {
     computers.clear();
   }
 
-  public void laptopBorrowForm() {
+  private void laptopBorrowForm() {
     new Clrscr();
     new Title();
     inventoryController.showAvailableLaptops();
@@ -878,7 +884,7 @@ public class AppController {
       String studentId = in.nextLine();
       System.out.print("Enter Collateral: ");
       String collateral = in.nextLine();
-      submitVerification(studentId, collateral, null, laptopFound);
+      borrowingSubmitConfirmation(studentId, collateral, null, laptopFound);
     } else if (laptopFound != null && laptopFound.getStatus().equalsIgnoreCase("not available")) {
       System.out.println("LAPTOP" + selected + " isn't available at the moment.");
     } else {
@@ -888,7 +894,7 @@ public class AppController {
     laptops.clear();
   }
 
-  public void equipmentBorrowForm() {
+  private void equipmentBorrowForm() {
     new Clrscr();
     new Title();
     inventoryController.showAvailableEquipments();
@@ -911,7 +917,7 @@ public class AppController {
       String studentId = in.nextLine();
       System.out.print("Enter Collateral: ");
       String collateral = in.nextLine();
-      submitVerification(studentId, collateral, null, equipmentFound);
+      borrowingSubmitConfirmation(studentId, collateral, null, equipmentFound);
     } else if (equipmentFound != null && equipmentFound.getStatus().equalsIgnoreCase("not available")) {
       System.out.println(equipmentFound.getName() + " isn't available at the moment.");
     } else {
@@ -921,50 +927,345 @@ public class AppController {
     equipments.clear();
   }
 
-  private void returningForm() {
-    boolean running = true;
-    while (running) {
-      new Clrscr();
-      new Title();
-      System.out.println("[1] PC");
-      System.out.println("[2] Laptop");
-      System.out.println("[3] Other Equipments");
-      System.out.println("[4] Cancel");
-      System.out.print("Select a type of resources: ");
-      int ch = in.nextInt();
-      in.nextLine();
-      switch (ch) {
-        case 1:
-          running = false;
-          break;
+  public void returningSubmitConfirmation(Resource resource, Transaction transaction, TransactionHeader transactionHeader) {
+    /* 
+      TODO: RETURNING FLOW
+    * 1. Return item
+    * 2. Record new transaction log
+    * 3. Update item transaction
+    */
+    Computer computer = null;
+    Laptop laptop = null;
+    Equipment equipment = null;
+    ComputerTransaction computerTransaction = null;
+    LaptopTransaction laptopTransaction = null;
+    EquipmentTransaction equipmentTransaction = null;
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a");
+    LocalDateTime returnDateTime = LocalDateTime.now();
+    String reviewDetailsStr = String.format("Transaction ID: %d\nBorrowed Date & Time: %s", transactionHeader.getTransactionId(), transactionHeader.getTransDateTime().format(formatter));
+    String borrowerDetailsStr = "";
+    int returningQuantity = 0;
+    
+    studentController.fetchStudentsFromDatabase();
+    Student borrower = studentController.searchStudent(transaction.getStudentNo());
+    studentController.clearStudents();
 
-        case 2:
-          running = false;
-          break;
+    logController.fetchTransactionLogsFromDatabase();
+    List<TransactionLog> transactionLogs = logController.getTransactionsLog();
+    TransactionLog newTransactionLog = new TransactionLog(returnDateTime, borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Returned", transactionHeader.getTransactionId(), transaction.getItemId(), transaction.getItemName(), "Success");
+    
+    reviewDetailsStr = reviewDetailsStr.concat(String.format("\nReturned Date & Time: %s", returnDateTime.format(formatter)));
+    if (resource instanceof Computer) {
+      computer = (Computer) resource; 
+      computerTransaction = (ComputerTransaction) transaction;
+      computerTransaction.setReciever(currentUser.getUsername());
+      reviewDetailsStr =  reviewDetailsStr.concat(String.format("\nBorrowed Resource: %s (CL%d)", computerTransaction.getItemName(), computerTransaction.getDestination()));
+    } else if (resource instanceof Laptop) {
+      laptop = (Laptop) resource;
+      laptopTransaction = (LaptopTransaction) transaction;
+      laptopTransaction.setReciever(currentUser.getUsername());
+      reviewDetailsStr = reviewDetailsStr.concat(String.format("\nBorrowed Resource: %s", laptopTransaction.getItemName()));
+    } else if (resource instanceof Equipment) {
+      equipment = (Equipment) resource;
+      equipmentTransaction = (EquipmentTransaction) transaction;
+      equipmentTransaction.setReciever(currentUser.getUsername());
+      System.out.printf("Enter returning quantity: ");
+      returningQuantity = in.nextInt(); in.nextLine();
+      if (returningQuantity < 1 || returningQuantity > equipmentTransaction.getBorrowQuantity()) {
+        System.out.println("You cannot return greater than the quantity you borrowed.");
+        newTransactionLog.setStatus("Failed");
+    
+        transactionLogs.add(newTransactionLog);
+        logController.setTransactionsLog(transactionLogs);
+        
+        logController.updateTransactionLogDatabase();
+        transactionLogs.clear();
+        logController.clearTransactionLog();
+        // TODO: auditLog
+        return;
+      } 
+      reviewDetailsStr = reviewDetailsStr.concat(String.format("\nBorrowed Resource: %s\nBorrowed Quantity: %d\nReturning Quantity: %d\n", equipmentTransaction.getItemName(), equipmentTransaction.getBorrowQuantity(), returningQuantity));
+    }
+    while (true) {
+      new Clrscr(); new Title();
+      reviewDetailsStr = reviewDetailsStr.concat(String.format("\nIssuer: %s\nReceiver: %s\n", transaction.getIssuer(), transaction.getReceiver()));
+      System.out.println("-----------------------------------------\n--- \t   Review Detailst\t      ---\n-----------------------------------------\n");
+      System.out.println(reviewDetailsStr);
+      System.out.println("-----------------------------------------\n--- \t   Borrower Details\t      ---\n-----------------------------------------\n");
+      borrowerDetailsStr = borrowerDetailsStr.concat(String.format("Student ID: %s\nFull Name: %s\nCourse Year & Section: %s %d-%c\nCollateral: %s\nDepartment: %s\n", transaction.getStudentNo(), transaction.getStudentName(), borrower.getCourse(), borrower.getYear(), borrower.getSection(), transaction.getCollateral() , borrower.getDepartment()));
+      System.out.println(borrowerDetailsStr);
+      System.out.print("Submit Verification [Y/N]: ");
+      char ch = in.nextLine().toUpperCase().charAt(0);
+      if (ch == 'N') {
+        System.out.println("Borrow Transaction Canceled.");
+        newTransactionLog.setStatus("Canceled");
+        // transactionLogs.add(new TransactionLog(returnDateTime, borrower.getStudentId(), borrower.getFullName("fn-mi-ln"), "Returned", transactionHeader.getTransactionId(), transaction.getItemId(), transaction.getItemName(), "Canceled"))
+        transactionLogs.add(newTransactionLog);
+        logController.setTransactionsLog(transactionLogs);
 
-        case 3:
-          running = false;
-          break;
+        logController.updateTransactionLogDatabase();
+        transactionLogs.clear();
+        logController.clearTransactionLog();
+        // transactionController.clearTransactionsHeader();
+        // transactionsHeader.clear();
+        // TODO: auditLog
+        return;
+      }
+      if (ch == 'Y' && computer != null) {
+        inventoryController.returnItem(computer);
+        computerTransaction.setReturnDateTime(returnDateTime);
+        computerTransaction.setReturned(true);
+        transactionLogs.add(newTransactionLog);
+        logController.setTransactionsLog(transactionLogs);
+        
+        
+        // UPDATE
+        inventoryController.updateComputerDatabase();
+        logController.updateTransactionLogDatabase();
+        transactionController.updateComputerTransactionsDatabase();
 
-        case 4:
-          return;
+        // CLEAR
+        inventoryController.clearComputers();
+        transactionController.clearComputerTransactions();
+        logController.clearTransactionLog();
+        break;
+      } else if (ch == 'Y' && laptop != null) {
+        inventoryController.returnItem(laptop);
+        laptopTransaction.setReturnDateTime(returnDateTime);
+        laptopTransaction.setReturned(true);
+        transactionLogs.add(newTransactionLog);
+        logController.setTransactionsLog(transactionLogs);
+
+        // UPDATE
+        inventoryController.updateLaptopDatabase();
+        transactionController.updateLaptopTransactionsDatabase();
+        logController.updateTransactionLogDatabase();
+        
+        // CLEAR
+        inventoryController.clearLaptops();
+        transactionController.clearLaptopTransactions();
+        logController.clearTransactionLog();
+        break;
+      } else if (ch == 'Y' && equipment != null) {
+        inventoryController.returnItem(equipment, returningQuantity);
+        equipmentTransaction.setBorrowQuantity(equipmentTransaction.getBorrowQuantity() - returningQuantity);
+        equipmentTransaction.setReturnDateTime(returnDateTime);
+        transactionLogs.add(newTransactionLog);
+        logController.setTransactionsLog(transactionLogs);
+        if (equipmentTransaction.getBorrowQuantity() == 0) {
+          equipmentTransaction.setReturned(true);
+        }
+        // UPDATE
+        inventoryController.updateEquipmentDatabase();
+        transactionController.updateEquipmentTransactionsDatabase();
+        logController.updateTransactionLogDatabase();
+
+        // CLEAR
+        inventoryController.clearEquipments();
+        transactionController.clearEquipmentTransactions();
+        logController.clearTransactionLog();
+        break;
       }
     }
   }
 
-  public void computerReturnForm() {
+  private void returningForm() {
+    new Clrscr();
+    new Title();
+    System.out.print("Return a resource by transaction ID: ");
+    int transactionId = in.nextInt(); in.nextLine();
+    
+    transactionController.fetchTransactionsHeader();
+    TransactionHeader transHeader = transactionController.searchTransactionHeaderById(transactionId);
+    transactionController.clearTransactionsHeader();
+    if (transHeader == null) {
+      System.out.println("Transaction ID does not found.");
+      new Getch();
+      return;
+    }
+    if (transHeader.getItemType().equalsIgnoreCase("Computer")) {
+      transactionController.fetchComputerTransactionsFromDatabase();
+      ComputerTransaction computerTransaction = transactionController.searchComputerTransactionById(transactionId);
+      if (computerTransaction.isReturned()) {
+        System.out.println("This transaction is completed since " + computerTransaction.getReturnDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")));
+        new Getch();
+        return;
+      }
+      int destination = computerTransaction.getDestination();
+      int computerId = computerTransaction.getItemId();
+      inventoryController.fetchComputersFromDatabase(destination);
+      Computer  computer = inventoryController.searchComputer(computerId);
+      returningSubmitConfirmation(computer, computerTransaction, transHeader);
 
+    } else if (transHeader.getItemType().equalsIgnoreCase("Laptop")) {
+      transactionController.fetchLaptopTransactionsFromDatabase();
+      LaptopTransaction laptopTransaction = transactionController.searchLaptopTransactionById(transactionId);
+      if (laptopTransaction.isReturned()) {
+        System.out.println("This transaction is completed since." + laptopTransaction.getReturnDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")));
+        return;
+      }
+      int laptopId = laptopTransaction.getItemId();
+      inventoryController.fetchLaptopsFromDatabase();
+      Laptop laptop = inventoryController.searchLaptop(laptopId);
+      returningSubmitConfirmation(laptop, laptopTransaction, transHeader);
+    
+    } else if (transHeader.getItemType().equalsIgnoreCase("Equipment")) {
+      transactionController.fetchEquipmentTransactionsFromDatabase();
+      EquipmentTransaction equipmentTransaction = transactionController.searchEquipmentTransactionById(transactionId);
+      if (equipmentTransaction.isReturned()) {
+        System.out.println("This transaction is completed since." + equipmentTransaction.getReturnDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")));
+        return;
+      }
+      int equipmentId = equipmentTransaction.getItemId();
+      inventoryController.fetchEquipmentsFromDatabase();
+      Equipment equipment = inventoryController.searchEquipment(equipmentId);
+      returningSubmitConfirmation(equipment, equipmentTransaction, transHeader);
+      
+    }
+    new Getch();
+    inventoryController.clearComputers();
+    inventoryController.clearLaptops();
+    inventoryController.clearEquipments();
+    transactionController.clearComputerTransactions();
+    transactionController.clearLaptopTransactions();
+    transactionController.clearEquipmentTransactions();
+    transactionController.clearTransactionsHeader();
+  }
+  
+  // private void computerReturnForm() {
+  //   int destination = 0;
+  //   while (destination < 1 || destination > 3) {
+  //     System.out.print("Select a Computer Lab (1-3): ");
+  //     destination = in.nextInt();
+  //   }
+  //   new Clrscr();
+  //   new Title();
+  //   inventoryController.showAvailableComputers(destination);
+  //   List<Computer> computers = inventoryController.getComputers();
+
+  //   System.out.println("\n-------------------------------------------");
+  //   System.out.print("Select a Computer: ");
+  //   int selected = in.nextInt();
+  //   String selectedComputer = "PC" + String.valueOf(selected);
+  //   in.nextLine();
+
+  //   Computer computerFound = inventoryController.searchComputer(selectedComputer);
+  //   if (computerFound != null && computerFound.getName().equalsIgnoreCase(selectedComputer)
+  //       && computerFound.getStatus().equalsIgnoreCase("available")) {
+  //     System.out.print("Enter Student ID: ");
+  //     String studentId = in.nextLine();
+  //     System.out.print("Enter Collateral: ");
+  //     String collateral = in.nextLine();
+  //     submitVerification(studentId, collateral, destination, computerFound);
+  //   } else if (computerFound != null && computerFound.getName().equalsIgnoreCase(selectedComputer)
+  //       && computerFound.getStatus().equalsIgnoreCase("not available")) {
+  //     System.out.println("PC" + selected + " isn't available at the moment.");
+  //   } else {
+  //     System.out.println("PC" + selected + " does not exist.");
+  //   }
+  //   new Getch();
+  //   computers.clear();
+  // }
+
+  // private void laptopReturnForm() {
+  //   new Clrscr();
+  //   new Title();
+  //   inventoryController.showAvailableLaptops();
+  //   List<Laptop> laptops = inventoryController.getLaptops();
+  //   System.out.print("Select a Laptop: ");
+  //   int selected = in.nextInt();
+  //   in.nextLine();
+  //   String selectedLaptop = String.format("LAPTOP%d", selected);
+
+  //   Laptop laptopFound = inventoryController.searchLaptop(selectedLaptop);
+
+  //   if (laptopFound != null && laptopFound.getStatus().equalsIgnoreCase("available")) {
+  //     System.out.print("Enter Student ID: ");
+  //     String studentId = in.nextLine();
+  //     System.out.print("Enter Collateral: ");
+  //     String collateral = in.nextLine();
+  //     submitVerification(studentId, collateral, null, laptopFound);
+  //   } else if (laptopFound != null && laptopFound.getStatus().equalsIgnoreCase("not available")) {
+  //     System.out.println("LAPTOP" + selected + " isn't available at the moment.");
+  //   } else {
+  //     System.out.println("LAPTOP" + selected + " doesn't exist.");
+  //   }
+  //   new Getch();
+  //   laptops.clear();
+  // }
+
+  // private void equipmentReturnForm() {
+  //   new Clrscr();
+  //   new Title();
+  //   inventoryController.showAvailableEquipments();
+  //   List<Equipment> equipments = inventoryController.getEquipments();
+  //   System.out.print("Select an Equipment by ID: ");
+  //   int selected = in.nextInt();
+
+  //   Equipment equipmentFound = inventoryController.searchEquipment(selected);
+  //   if (equipmentFound != null && equipmentFound.getStatus().equalsIgnoreCase("available")) {
+
+  //     int quantity = 0;
+  //     while (quantity < 1 || quantity > equipmentFound.getAvailableQuantity()) {
+  //       System.out.print("Quantity to borrow: ");
+  //       quantity = in.nextInt();
+  //     }
+  //     in.nextLine();
+  //     String tempEquipmentName = equipmentFound.getName() + quantity;
+  //     equipmentFound.setName(tempEquipmentName);
+  //     System.out.print("Enter Student ID: ");
+  //     String studentId = in.nextLine();
+  //     System.out.print("Enter Collateral: ");
+  //     String collateral = in.nextLine();
+  //     submitVerification(studentId, collateral, null, equipmentFound);
+  //   } else if (equipmentFound != null && equipmentFound.getStatus().equalsIgnoreCase("not available")) {
+  //     System.out.println(equipmentFound.getName() + " isn't available at the moment.");
+  //   } else {
+  //     System.out.println("\nEquipment ID doesn't exist.");
+  //   }
+  //   new Getch();
+  //   equipments.clear();
+  // }
+
+  private void viewInventory() {
+    while (true) {
+      new Clrscr();
+      new Title();
+      System.out.println("[1] View Computer Inventory");
+      System.out.println("[2] View Laptop Inventory");
+      System.out.println("[3] View Equipment Inventory");
+      System.out.println("[4] Back to Dashboard");
+      System.out.print("Select: ");
+      int ch = in.nextInt(); in.nextLine();
+      
+      switch (ch) {
+        case 1:
+          inventoryController.displayAllComputers();
+          inventoryController.clearComputers();
+          break;
+      
+        case 2:
+          inventoryController.displayAllLaptops();
+          inventoryController.clearLaptops();
+          break;
+          
+        case 3:
+          inventoryController.displayAllEquipments();
+          inventoryController.clearEquipments();
+          break;
+
+        case 4:
+          return;
+
+        default:
+          System.out.println("Invalid selection! Please select between 1-4.");
+          break;
+      }
+      
+    }
   }
 
-  public void laptopReturnForm() {
-
-  }
-
-  public void equipmentReturnForm() {
-
-  }
-
-  public void computerBorrowersList() {
+  private void computerBorrowersList() {
     new Clrscr();
     new Title();
     transactionController.fetchComputerTransactionsFromDatabase();
@@ -972,7 +1273,7 @@ public class AppController {
     transactionController.clearComputerTransactions();
   }
 
-  public void laptopBorrowersList() {
+  private void laptopBorrowersList() {
     new Clrscr();
     new Title();
     transactionController.fetchLaptopTransactionsFromDatabase();
@@ -981,7 +1282,7 @@ public class AppController {
     new Getch();
   }
 
-  public void equipmentBorrowersList() {
+  private void equipmentBorrowersList() {
     new Clrscr();
     new Title();
     transactionController.fetchEquipmentTransactionsFromDatabase();

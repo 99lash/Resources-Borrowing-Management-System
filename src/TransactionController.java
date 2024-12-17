@@ -64,7 +64,7 @@ public class TransactionController {
  */
   public void displayComputerTransactionsList() {
     Scanner in = new Scanner(System.in);
-    final int displayCountPerPage = 1;
+    final int displayCountPerPage = 10;
     int totalRecords = computerTransactions.size();
     int totalPages = (int) Math.ceil((double) totalRecords / displayCountPerPage);
     int currentPage = 1;
@@ -164,8 +164,8 @@ public class TransactionController {
     System.out.printf("| %-8s | %-20s | %-30s | %-10s | %-20s | %-8s | %-20s | %-20s | %-10s | %-10s | %-8s |\n", "Trans ID", "Borrower Student No.", "Borrower Name", "Collateral", "Item Borrowed", "Quantity", "Borrowed Date & Time", "Returned Date & Time", "Issuer", "Reciever", "Status");
     System.out.println("+----------+----------------------+--------------------------------+------------+----------------------+----------+----------------------+----------------------+------------+------------+----------+");
     if (equipmentTransactions.isEmpty()) {
-      System.out.println("| No Transaction Records :D \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t       |");
-      System.out.println("+----------+----------------------+--------------------------------+------------+-----------------+-----------------+----------------------+----------------------+------------+------------+----------+");
+      System.out.println("| No Transaction Records :D \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t      |");
+      System.out.println("+----------+----------------------+--------------------------------+------------+----------------------+----------+----------------------+----------------------+------------+------------+----------+");
     } else {
       int size = equipmentTransactions.size()-1;
       int displayCount = 1;
@@ -184,12 +184,48 @@ public class TransactionController {
         String returnDateTime = equipmentTransactions.get(i).getReturnDateTime() == null? "N/A" : equipmentTransactions.get(i).getReturnDateTime().format(formatter);
         String issuer = equipmentTransactions.get(i).getIssuer();
         String reciever = equipmentTransactions.get(i).getReceiver();
-        String status = equipmentTransactions.get(i).getReturnDateTime() == null ? "Borrowed" : "Returned";
+        String status = borrowQuantity != 0 ? "Borrowed" : "Returned";
         System.out.printf("| %-8d | %-20s | %-30s | %-10s | %-20s | %-8d | %-20s | %-20s | %-10s | %-10s | %-8s |\n", transactionId, borrowerStudentNo, borrowerStudentName, collateral, itemName, borrowQuantity, borrowDateTime, returnDateTime, issuer, reciever, status);
         System.out.println("+----------+----------------------+--------------------------------+------------+----------------------+----------+----------------------+----------------------+------------+------------+----------+");
       }
     }
     System.out.println("\n\n");
+  }
+
+  public TransactionHeader searchTransactionHeaderById(int transactionId) {
+    for (TransactionHeader transheader : transactionsHeader) {
+      if (transheader.getTransactionId() == transactionId) {
+        return transheader;
+      }
+    }
+    return null;
+  }
+
+  public ComputerTransaction searchComputerTransactionById(int transactionId) {
+    for (ComputerTransaction computerTransaction : computerTransactions) {
+      if (computerTransaction.getTransactionId() == transactionId) {
+        return computerTransaction;
+      }
+    }
+    return null;
+  }
+
+  public LaptopTransaction searchLaptopTransactionById(int transactionId) {
+    for (LaptopTransaction laptopTransaction : laptopTransactions) {
+      if (laptopTransaction.getTransactionId() == transactionId) {
+        return laptopTransaction;
+      }
+    }
+    return null;
+  }
+  
+  public EquipmentTransaction searchEquipmentTransactionById(int transactionId) {
+    for (EquipmentTransaction equipmentTransaction : equipmentTransactions) {
+      if (equipmentTransaction.getTransactionId() == transactionId) {
+        return equipmentTransaction;
+      }
+    }
+    return null;
   }
 
   public void clearTransactionsHeader() {
@@ -223,7 +259,8 @@ public class TransactionController {
          int transactionId = Integer.parseInt(fields[0]);
          LocalDateTime transDateTime = LocalDateTime.parse(fields[1], formatter);
          String borrowerName = fields[2];
-         transactionsHeader.add(new TransactionHeader(transactionId, transDateTime, borrowerName));
+         String itemType = fields[3];
+         transactionsHeader.add(new TransactionHeader(transactionId, transDateTime, borrowerName, itemType));
        } else {
          header = false;
        }
@@ -356,7 +393,8 @@ public class TransactionController {
         int transactionId = transactionHeader.getTransactionId();
         String borrowDateTime = transactionHeader.getTransDateTime().format(formatter);
         String borrowerName = transactionHeader.getBorrowerName();
-        writer.printf("\n%d,%s,%s", transactionId, borrowDateTime, borrowerName);
+        String itemType = transactionHeader.getItemType();
+        writer.printf("\n%d,%s,%s,%s", transactionId, borrowDateTime, borrowerName, itemType);
       }
       reader.close();
       writer.close();
@@ -371,14 +409,13 @@ public class TransactionController {
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
-        System.out.println("[HEADER STATUS: 200]");
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[HEADER STATUS: 404R]");
+        System.out.println("[HEADER UPDATE STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[HEADER STATUS: 404D]");
+      System.out.println("[HEADER UPDATE STATUS: 404D]");
     }
   }
 
@@ -422,14 +459,13 @@ public class TransactionController {
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
-        System.out.println("[UPDATE STATUS: 200]");
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[UPDATE STATUS: 404R]");
+        System.out.println("[COMPUTER TRANSAC STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[UPDATE STATUS: 404D]");
+      System.out.println("[COMPUTER TRANSAC STATUS: 404D]");
     }
   }
 
@@ -472,14 +508,13 @@ public class TransactionController {
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
-        System.out.println("[UPDATE STATUS: 200]");
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[UPDATE STATUS: 404R]");
+        System.out.println("[LAPTOP TRANSAC STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[UPDATE STATUS: 404D]");
+      System.out.println("[LAPTOP TRANSACSTATUS: 404D]");
     }
   }
 
@@ -523,14 +558,13 @@ public class TransactionController {
     if (originalFile.delete()) {
       if (updatedFile.renameTo(originalFile)) {
         // 200: CSV file updated successfully
-        System.out.println("[UPDATE STATUS: 200]");
       } else {
         // 404R: Couldn't rename file
-        System.out.println("[UPDATE STATUS: 404R]");
+        System.out.println("[EQUIPMENT TRANSAC STATUS: 404R]");
       }
     } else {
       // 404D: Couldn't delete file
-      System.out.println("[UPDATE STATUS: 404D]");
+      System.out.println("[EQUIPMENT TRANSAC STATUS: 404D]");
     }
   }
 
@@ -566,8 +600,4 @@ public class TransactionController {
   public void setEquipmentTransactions(List<EquipmentTransaction> equipmentTransactions) {
     this.equipmentTransactions = equipmentTransactions;
   }
-
-
-
-  
 }

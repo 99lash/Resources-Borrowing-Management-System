@@ -25,7 +25,7 @@ public abstract class Transaction {
     this.issuer = issuer;
     this.reciever = "N/A";
     this.isReturned = false;
-    this.status = isReturned ? "returned" : "borrowed";
+    this.status = isReturned ? "Returned" : "Borrowed";
   }
 
   public Transaction(int transactionId, String studentNo, String studentName, String collateral, int itemId, String itemName, LocalDateTime borrowDateTime, LocalDateTime returnDateTime, String issuer, String reciever, String status) {
@@ -140,6 +140,7 @@ public abstract class Transaction {
 
   public void setReturned(boolean isReturned) {
     this.isReturned = isReturned;
+    if (isReturned) setStatus("Returned");
   }
 
   public String getStatus() {
