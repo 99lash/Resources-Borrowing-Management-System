@@ -50,15 +50,17 @@ public class Main {
 /*
  * 
  * 
- * 
- * 
+ * GAGAWIN BUKAS: 
+ * 1. TryCatch, 
+ * 2. Display Borrower List [Next, Previous],
+ * 3. Hide password input sa Manage Account
  * 
  * TODO LIST: [6/11]
- * PROJECT PROGRESS: 7/11 = 63%
+ * PROJECT PROGRESS: 8/11 = 72%
  * 
  * !! Major Features (Needed ASAP) [6/8]
  * ✅ Borrow an Item
- * 🖕 Return an Item
+ * ✅  Return an Item
  * ✅ Borrower Log
  * ✅ Borrower List
  * 🖕 Audit Log

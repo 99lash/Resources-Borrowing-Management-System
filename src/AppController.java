@@ -1102,6 +1102,7 @@ public class AppController {
       LaptopTransaction laptopTransaction = transactionController.searchLaptopTransactionById(transactionId);
       if (laptopTransaction.isReturned()) {
         System.out.println("This transaction is completed since." + laptopTransaction.getReturnDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")));
+        new Getch();
         return;
       }
       int laptopId = laptopTransaction.getItemId();
@@ -1113,7 +1114,9 @@ public class AppController {
       transactionController.fetchEquipmentTransactionsFromDatabase();
       EquipmentTransaction equipmentTransaction = transactionController.searchEquipmentTransactionById(transactionId);
       if (equipmentTransaction.isReturned()) {
+        System.out.println(equipmentTransaction.isReturned());
         System.out.println("This transaction is completed since." + equipmentTransaction.getReturnDateTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm a")));
+        new Getch();
         return;
       }
       int equipmentId = equipmentTransaction.getItemId();

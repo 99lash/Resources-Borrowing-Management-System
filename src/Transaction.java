@@ -39,8 +39,8 @@ public abstract class Transaction {
     this.returnDateTime = returnDateTime;
     this.issuer = issuer;
     this.reciever = reciever;
-    this.isReturned = returnDateTime != null;
     this.status = status;
+    this.isReturned = status.equalsIgnoreCase("Returned");
   }
   
   public abstract String getTransactionDetails();
