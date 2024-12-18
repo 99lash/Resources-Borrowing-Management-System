@@ -4,10 +4,10 @@ itemId,itemName,type,quantity,availableQuantity,status
 3,Screw Driver,Equipment,5,5,Available
 4,RJ45 Crimping Tool,Equipment,5,5,Available
 5,Electric Fan,Equipment,5,5,Available
-6,REMOTE (SKY WORTH),Equipment,1,1,Available
+6,REMOTE (SKY WORTH),Equipment,1,0,Not Available
 7,REMOTE (ACE),Equipment,1,1,Available
 8,REMOTE (KKJBL),Equipment,1,1,Available
 9,Speaker,Equipment,2,2,Available
 10,Microphone,Equipment,3,3,Available
 11,Power Cord,Equipment,5,5,Available
-12,TEST ITEM,Equipment,3,1,Available
+12,TEST ITEM,Equipment,3,0,Not Available

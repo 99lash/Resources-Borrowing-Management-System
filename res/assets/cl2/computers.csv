@@ -1,5 +1,5 @@
 itemId,itemName,type,status,destination
-201,PC1,Computer,Not Available,2
+201,PC1,Computer,Available,2
 202,PC2,Computer,Available,2
 203,PC3,Computer,Available,2
 204,PC4,Computer,Available,2

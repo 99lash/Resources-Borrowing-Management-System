@@ -1,2 +1,5 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemId,itemName,borrowQuantity,borrowDateTime,returnDateTime,issuer,reciever,status
-1004,20231211-S,RENZ C. GERONIMO,panty,12,TEST ITEM,2,12-18-2024 03:15 AM,12-18-2024 03:16 AM,admin,admin,Borrowed
+1003,20230183-S,LANCE KERWIN D. ALCALDE,ID,12,TEST ITEM,1,12-18-2024 09:14 AM,N/A,admin,N/A,Borrowed
+1004,20230184-S,JOHN ASHER M. MANIT,meow,12,TEST ITEM,1,12-18-2024 09:15 AM,N/A,admin,N/A,Borrowed
+1005,20230114-S,JOSHUA PAUL M. COLMO,student id,12,TEST ITEM,1,12-18-2024 10:11 AM,N/A,admin,N/A,Borrowed
+1006,20220629-S,RICARDO  SALVADOR IV,paa,6,REMOTE (SKY WORTH),1,12-18-2024 10:31 AM,N/A,admin,N/A,Borrowed

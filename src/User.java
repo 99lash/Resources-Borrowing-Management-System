@@ -41,7 +41,6 @@ public class User {
   public String getAccountInfo() {
     return String.format("id: %d\nusername: %s\npassword: %s\nrole: %s\n",id, username, password, role);
   }
-
   // SETTERS
   public void setId(int id) {
     this.id = id;

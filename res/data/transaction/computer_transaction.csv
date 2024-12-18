@@ -1,4 +1,2 @@
 transId,borrowerStudentNo,borrowerName,borrowerCollateral,itemId,itemName,itemDestination,borrowDateTime,returnDateTime,issuer,reciever,status
-1001,20230184-S,JOHN ASHER M. MANIT,student id,101,PC1,1,12-18-2024 02:11 AM,12-18-2024 02:18 AM,admin,admin,Returned
-1002,20230183-S,LANCE KERWIN D. ALCALDE,asd,102,PC2,1,12-18-2024 02:27 AM,12-18-2024 02:54 AM,admin,admin,Returned
-1005,20230183-S,LANCE KERWIN D. ALCALDE,studentid,101,PC1,1,12-18-2024 03:17 AM,12-18-2024 03:18 AM,admin,admin,Returned
+1001,20230114-S,JOSHUA PAUL M. COLMO,Student ID,308,PC8,3,12-18-2024 09:12 AM,12-18-2024 09:12 AM,admin,admin,Returned

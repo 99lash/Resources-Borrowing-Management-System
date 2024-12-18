@@ -32,6 +32,7 @@ public class StudentController {
 
     System.out.print("Student No: ");
     String studentNo = in.nextLine();
+    studentNo = studentNo.contains("-S") || studentNo.contains("-s") ? studentNo.toUpperCase() : studentNo + "-S";
     Student student = searchStudent(studentNo);
     if (student != null) {
       System.out.println("Student No. is already exist!");
@@ -61,7 +62,7 @@ public class StudentController {
     System.out.println("\nSuccesfully add a new record of student!");
     return true;
   }
-
+  
   public boolean updateStudentRecord() {
     new Clrscr();
     new Title();
