@@ -25,31 +25,17 @@ The Resources Borrowing Management System is designed to manage the borrowing an
 
 ---
 
-## Requirements
+## Quick Start
+1. Compile
+```css
+   javac -d bin src\*.java src\custom\utils\*.java
+```
+2. Run
+```css
+   java -cp bin Main
+```
 
-### Functional Requirements
-1. **User Management**:
-   - Admin and staff accounts with role-based access control.
-   - Login functionality.
-   - CRUD operations for user accounts.
-
-2. **Inventory Management**:
-   - Separate categories for computers and equipment.
-   - CRUD operations for inventory items.
-
-3. **Student Management**:
-   - CRUD operations for student records.
-
-4. **Borrowing/Returning**:
-   - Record transactions for borrowed and returned items.
-   - Track borrowing history.
-
-5. **Audit Log**:
-   - Log all system actions (e.g., login, CRUD operations).
-   - Export logs for external use.
-
-6. **Sorting and Filtering**:
-   - Sort borrowing records by:
-     - Date, Student ID, Item Name, etc.
-   - Filter by categories (e.g., computers, equipment).
-
+Alternatively,
+```css
+   compile_run.bat
+```
